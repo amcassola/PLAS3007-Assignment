@@ -3,6 +3,7 @@ package edu.plas.testautoandci.ampc.pageobjectmodels;
 import edu.plas.testautoandci.ampc.driver.Driver;
 import edu.plas.testautoandci.ampc.helper.WaitHelper;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
  * @author AnnaMaria.Cassola
  * @since 06/12/2015
  */
-public class AccountMenu{
+public class AccountMenu {
 
     public String getAccountUsername() {
         WebElement accountName = Driver.getWebDriver().findElement(By.id("gwt-debug-AccountMenu-name"));
@@ -27,9 +28,14 @@ public class AccountMenu{
     }
 
     public void clickLogOut() {
-        if (this.isDisplayed()){
+        if (this.isDisplayed()) {
             WebElement logOutMenuItem = Driver.getWebDriver().findElement(By.id("gwt-debug-AccountMenu-logout"));
             logOutMenuItem.click();
+            try {
+                Driver.getWebDriver().switchTo().alert().dismiss();
+                logOutMenuItem.click();
+            } catch (NoAlertPresentException Ex) {
+            }
         } else {
             throw new RuntimeException("Account Menu is not visible. Cannot log out. Account Menu must be made visible in order to log out.");
         }
