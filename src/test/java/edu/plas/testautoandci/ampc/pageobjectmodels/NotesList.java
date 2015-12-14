@@ -26,23 +26,26 @@ public class NotesList {
     public void clear() {
         System.out.println("********** Clearing notes.....");
         List<WebElement> notes = getNotes();
-        for (WebElement note : notes) {
-//            WaitHelper.disableImplicitWait();
-//            if (note.isDisplayed()) {
-//            Boolean notStale = new WebDriverWait(Driver.getWebDriver(), WaitHelper.EXPLICIT_WAIT_TIMEOUT).until(ExpectedConditions.not(ExpectedConditions.stalenessOf(note)));
-//            WebElement visibleElement = new WebDriverWait(Driver.getWebDriver(), WaitHelper.EXPLICIT_WAIT_TIMEOUT).until(ExpectedConditions.visibilityOf(note));
-//            WaitHelper.enableImplicitWait();
-//            if (visibleElement != null){
-            deleteNote(note);
-            waitForRemovalOfNote(note);
-//            }
-        }
+//        for (WebElement note : notes) {
+//            deleteNote(note);
+//            waitForRemovalOfNote(note);
+//        }
+
 //        WebElement note;
 //        while (notes.size() > 0){
-//            note = notes.get(0);
+//            note = notes.get(notes.size() - 1);
 //            deleteNote(note);
+////            waitForRemovalOfNote(note);
+//
 //            notes = getNotes();
 //        }
+
+        WebElement note;
+        for (int i = notes.size(); i != 0; i--){
+            System.out.println("******** i=" + i + ", notes.size() = " + notes.size());
+            note = notes.get(i-1);
+            deleteNote(note);
+        }
     }
 
     protected void waitForRemovalOfNote(WebElement note) {
@@ -52,10 +55,7 @@ public class NotesList {
     }
 
     public void waitForAdditionOfNote() {
-        WebElement noteList = Driver.getWebDriver().findElement(By.cssSelector(".NotesView-ScrollWindow"));
-        WaitHelper.disableImplicitWait();
-        new WebDriverWait(Driver.getWebDriver(), WaitHelper.EXPLICIT_WAIT_TIMEOUT).until(ExpectedConditions.textToBePresentInElement(noteList, "MOMENTS AGO"));
-        WaitHelper.enableImplicitWait();
+        WebElement noteList = Driver.getWebDriver().findElement(By.xpath("//*[@id='gwt-debug-notesListView']//div[text()='Moments ago']"));
     }
 
     public boolean containsNote(String title) {
@@ -94,9 +94,7 @@ public class NotesList {
     }
 
     private void deleteNote(WebElement note) {
-        WebElement deleteButton;
-
-        deleteButton = note.findElement(By.cssSelector(".focus-NotesView-Note-delete"));
+        WebElement deleteButton = note.findElement(By.cssSelector(".focus-NotesView-Note-delete"));
         new Actions(Driver.getWebDriver()).moveToElement(deleteButton).click().perform();
 
         confirmDelete();

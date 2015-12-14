@@ -39,19 +39,21 @@ public class CucumberBeforeAfter {
 
     @After(value="@notes", order = 10)
     public void clearNotes(){
-        HomePage homePage = new HomePage();
-        if (! Driver.getWebDriver().getCurrentUrl().startsWith(SiteUrlUtils.getSiteUrl("Evernote Home"))){
-            homePage.navigateToPage();
-            if (Driver.getWebDriver().getCurrentUrl().startsWith(SiteUrlUtils.getSiteUrl("Evernote Login"))){
-                LoginPage loginPage = new LoginPage();
-                loginPage.navigateToPage();
-                loginPage.signIn(PropertyUtils.getLoginUserName(), PropertyUtils.getLoginPassword());
+        if (Boolean.valueOf(PropertyUtils.getProperty("after.notes.deletenotes"))) {
+            HomePage homePage = new HomePage();
+            if (!Driver.getWebDriver().getCurrentUrl().startsWith(SiteUrlUtils.getSiteUrl("Evernote Home"))) {
+                homePage.navigateToPage();
+                if (Driver.getWebDriver().getCurrentUrl().startsWith(SiteUrlUtils.getSiteUrl("Evernote Login"))) {
+                    LoginPage loginPage = new LoginPage();
+                    loginPage.navigateToPage();
+                    loginPage.signIn(PropertyUtils.getLoginUserName(), PropertyUtils.getLoginPassword());
+                }
             }
-        }
 
-        homePage.getNotesList().clear();
+            homePage.getNotesList().clear();
 //        homePage.displayAccountMenu();
 //        homePage.getAccountMenu().clickLogOut();
+        }
     }
 
     // This ensures that this @After is always executed last
