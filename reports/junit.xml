@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><testsuite failures="1" name="cucumber.runtime.formatter.JUnitFormatter" skipped="0" tests="1" time="175.135266">
+<testcase classname="Creation of notes" name="Create a note" time="175.135266">
+<failure message="java.lang.AssertionError: Note is expected to be found in note list&#13;&#10;&#9;at org.junit.Assert.fail(Assert.java:88)&#13;&#10;&#9;at org.junit.Assert.assertTrue(Assert.java:41)&#13;&#10;&#9;at edu.plas.testautoandci.ampc.stepdefinitions.HomeSteps.isNoteInList(HomeSteps.java:48)&#13;&#10;&#9;at ✽.Then the note with title 'Sample title' and date 'NOTE_DATE_PLACEHOLDER' is still available in the list of notes(noteCreation.feature:14)&#13;&#10;"><![CDATA[Given the Evernote Home page is loaded......................................passed
+And an existing account is logged in to.....................................passed
+When a note with title 'Sample title' and body 'This is some body text' is created.passed
+Then the note with title 'Sample title' and date 'moments ago' is available in the list of notes.passed
+When the account is logged out from.........................................passed
+And the Evernote Login page is loaded.......................................passed
+And the existing account is logged in to....................................passed
+Then the note with title 'Sample title' and date 'NOTE_DATE_PLACEHOLDER' is still available in the list of notes.failed
+
+StackTrace:
+java.lang.AssertionError: Note is expected to be found in note list
+	at org.junit.Assert.fail(Assert.java:88)
+	at org.junit.Assert.assertTrue(Assert.java:41)
+	at edu.plas.testautoandci.ampc.stepdefinitions.HomeSteps.isNoteInList(HomeSteps.java:48)
+	at ✽.Then the note with title 'Sample title' and date 'NOTE_DATE_PLACEHOLDER' is still available in the list of notes(noteCreation.feature:14)
+]]></failure>
+</testcase>
+</testsuite>

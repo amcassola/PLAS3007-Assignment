@@ -1,0 +1,21 @@
+Clarification required: notes to be deleted after EVERY test, not after each run, right?
+
+@Before: Tried to create a new account at the start of the tests and deactivate it at the end of the tests. Upon next run, Evernote found the account deactivated and asked for reactivation. This requires email verification and it is out of the scope of the task to do more complex checks whehter the account exists and if it does reactivate it. It will therefore be assumed that an existing account will be available for the automated tests. This will require creation of the test account only once. 
+
+Difficulty checking currently logged in user:
+I am having some difficulty confirming the logged in user after login to the Evernote website. Login works fine and the home page is loaded. I am trying to click the Account menu item or image so that I can confirm that the logged in user matches the one I actually logged in with. 
+The problem is than when clicking the web element the account popup is not being displayed, so the account name continues to be unavailable in the DOM. I have tried several things - clicking using webElement.click, clicking using Actions.click, increasing the implicit wait, using an explicit wait, retrieving the image element, retrieving the menu item div element (gwt-debug-AccountMenu-avatar) ... I also tried using Actions.moveToElement, which seems to work because when the menu item is hovered over (manually) an Account tag is displayed, and the tag is being displayed upon moving to the element. Still, clicking after moving to the element does not load the popup.
+Solution: added waitForPageToLoad method that ensures that the note text area is available (visible) before the Account menu item is clicked. This proved to be successful. It was also important to find the right element for which to check for visibility, so that the same check will be valid when there are no notes and also when there are existing notes for the same user.
+[ Username of logged in user not retrieved using findElement(By.cssSelector()). At first I thought this may be related to the click function used (WebElement.click rather than Actions.click).
+Tried with both WebElement.click and with Actions.click. Account Menu still not being displayed.
+Tried moving to image element first then clicking, not working either
+Tried with findElement and with findElements, and also increased implicit wait. Not helpful.
+Tried using id, css selector but still not displaying menu. ]
+
+Incorrect login credentials:
+What is the best way to handle dynamic messages?
+
+Note creation: could not find the right elements to use to input title and body. Elements are either not visible so interaction cannot be done with them or nothing happens. Boqqqqqqqqqqqqqqqq.
+
+
+
