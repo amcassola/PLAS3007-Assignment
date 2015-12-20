@@ -1,6 +1,7 @@
 package edu.plas.testautoandci.ampc.pageobjectmodels;
 
 import edu.plas.testautoandci.ampc.driver.Driver;
+import edu.plas.testautoandci.ampc.helper.DriverHelper;
 import edu.plas.testautoandci.ampc.helper.WaitHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -19,43 +20,8 @@ import java.util.List;
  */
 public class NotesList {
 
-//    private void waitForAvailability() {
-//        new WebDriverWait(Driver.getWebDriver(), 30).until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".focus-NotesView-Subheader-NotesOverview")));
-//    }
-
-    public void clear() {
-        System.out.println("********** Clearing notes.....");
-        List<WebElement> notes = getNotes();
-//        for (WebElement note : notes) {
-//            deleteNote(note);
-//            waitForRemovalOfNote(note);
-//        }
-
-//        WebElement note;
-//        while (notes.size() > 0){
-//            note = notes.get(notes.size() - 1);
-//            deleteNote(note);
-////            waitForRemovalOfNote(note);
-//
-//            notes = getNotes();
-//        }
-
-        WebElement note;
-        for (int i = notes.size(); i != 0; i--){
-            System.out.println("******** i=" + i + ", notes.size() = " + notes.size());
-            note = notes.get(i-1);
-            deleteNote(note);
-        }
-    }
-
-    protected void waitForRemovalOfNote(WebElement note) {
-        WaitHelper.disableImplicitWait();
-        new WebDriverWait(Driver.getWebDriver(), WaitHelper.EXPLICIT_WAIT_TIMEOUT).until(ExpectedConditions.stalenessOf(note));
-        WaitHelper.enableImplicitWait();
-    }
-
-    public void waitForAdditionOfNote() {
-        WebElement noteList = Driver.getWebDriver().findElement(By.xpath("//*[@id='gwt-debug-notesListView']//div[text()='Moments ago']"));
+    public void waitForAdditionOfNote(String title) {
+        DriverHelper.findElement(By.xpath("//*[@id='gwt-debug-notesListView']//div[text()='" + title + "' and ../div/text()='Moments ago']"));
     }
 
     public boolean containsNote(String title) {
@@ -66,21 +32,35 @@ public class NotesList {
         return getNotes(title, noteDateRegex).size() > 0;
     }
 
-    private List<WebElement> getNotes(String title, String noteDateRegex) {
+    protected List<WebElement> getNotes(String title, String noteDateRegex) {
+        List<WebElement> matchingNotes = new ArrayList<>();
+
+        // check that there is at least 1 note with a non-blank title
+        List<WebElement> titleElements = DriverHelper.findElements(By.xpath("//div[@id='gwt-debug-notesListView']//div[contains(@class,'qa-title') and not(text()='')]"));
+
+        if (titleElements.size() == 0) {
+            return matchingNotes;
+        }
+
         System.out.println("********* Getting notes with title " + title + " and matching date regex " + noteDateRegex);
         List<WebElement> notes = getNotes();
 
-        List<WebElement> matchingNotes = new ArrayList<>();
         WebElement element;
         for (WebElement note : notes) {
-            System.out.println("************ checking note title " + title);
-            element = note.findElement(By.cssSelector(".focus-NotesView-Note-noteTitle"));
-            System.out.println("************ found note with title " + element.getText());
+            System.out.println("************ checking note title '" + title + "'");
+//            System.out.println("===========================================================");
+//            System.out.println(Driver.getWebDriver().getPageSource());
+//            System.out.println("===========================================================");
+            element = DriverHelper.findElement(note, By.cssSelector(".qa-title"));
+            System.out.println("************ found note with title text '" + element.getText() + "'");
+            System.out.println("************ found note with title class " + element.getAttribute("class"));
+//            new WebDriverWait(Driver.getWebDriver(), 5).until(ExpectedConditions.textToBePresentInElement(note, title));
             if (element.getText().equals(title)) {
                 if (noteDateRegex != null) {
                     System.out.println("************ checking note date " + noteDateRegex);
-                    element = note.findElement((By.cssSelector(".focus-NotesView-Note-date")));
+                    element = DriverHelper.findElement(note, By.cssSelector(".qa-date"));
                     System.out.println("************ found note with date " + element.getText());
+                    System.out.println("************ found note with date class " + element.getAttribute("class"));
                     if (element.getText().matches(noteDateRegex)) {
                         matchingNotes.add(note);
                     }
@@ -93,21 +73,21 @@ public class NotesList {
         return matchingNotes;
     }
 
-    private void deleteNote(WebElement note) {
-        WebElement deleteButton = note.findElement(By.cssSelector(".focus-NotesView-Note-delete"));
-        new Actions(Driver.getWebDriver()).moveToElement(deleteButton).click().perform();
-
-        confirmDelete();
-    }
-
-    private void confirmDelete() {
-        WebElement deleteButton = Driver.getWebDriver().findElement(By.id("gwt-debug-ConfirmationDialog-confirm"));
-        deleteButton.click();
+    protected void addNoteToShortcuts(WebElement note) {
+        WebElement shortcutButton = DriverHelper.findElement(note, By.cssSelector(".qa-shortcutButton"));
+        new Actions(Driver.getWebDriver()).moveToElement(shortcutButton).perform();
+        shortcutButton.click();
     }
 
     protected List<WebElement> getNotes() {
-//        waitForAvailability();
-        return Driver.getWebDriver().findElements(By.cssSelector(".focus-NotesView-Note"));
+        return DriverHelper.findElements(DriverHelper.findElement(By.id("gwt-debug-notesListView")), By.cssSelector(".focus-NotesView-Note"));
+    }
+
+    protected void clickNote(String title){
+        List<WebElement> notes = getNotes(title, null);
+        if (notes.size() > 0){
+            notes.get(0).click();
+        }
     }
 
 }

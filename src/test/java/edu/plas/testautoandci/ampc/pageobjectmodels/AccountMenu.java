@@ -1,6 +1,7 @@
 package edu.plas.testautoandci.ampc.pageobjectmodels;
 
 import edu.plas.testautoandci.ampc.driver.Driver;
+import edu.plas.testautoandci.ampc.helper.DriverHelper;
 import edu.plas.testautoandci.ampc.helper.WaitHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoAlertPresentException;
@@ -17,19 +18,19 @@ import java.util.List;
 public class AccountMenu {
 
     public String getAccountUsername() {
-        WebElement accountName = Driver.getWebDriver().findElement(By.id("gwt-debug-AccountMenu-name"));
+        WebElement accountName = DriverHelper.findElement(By.id("gwt-debug-AccountMenu-name"));
         return accountName.getText();
     }
 
     public void waitForAvailability() {
         WaitHelper.disableImplicitWait();
-        WaitHelper.untilAttributeValueMatches(By.cssSelector(".GNTMVRYJP"), "src", "^.*/shard/.*/user/.*$", WaitHelper.EXPLICIT_WAIT_TIMEOUT);
+        WaitHelper.untilAttributeValueMatches(By.cssSelector(".GOSDSN-CJP"), "src", "^.*/shard/.*/user/.*$", WaitHelper.EXPLICIT_WAIT_TIMEOUT);
         WaitHelper.enableImplicitWait();
     }
 
     public void clickLogOut() {
         if (this.isDisplayed()) {
-            WebElement logOutMenuItem = Driver.getWebDriver().findElement(By.id("gwt-debug-AccountMenu-logout"));
+            WebElement logOutMenuItem = DriverHelper.findElement(By.id("gwt-debug-AccountMenu-logout"));
             logOutMenuItem.click();
             try {
                 Driver.getWebDriver().switchTo().alert().dismiss();
@@ -42,7 +43,7 @@ public class AccountMenu {
     }
 
     public boolean isDisplayed() {
-        List<WebElement> accountMenu = Driver.getWebDriver().findElements(By.id("gwt-debug-AccountMenuPopup-root"));
+        List<WebElement> accountMenu = DriverHelper.findElements(By.id("gwt-debug-AccountMenuPopup-root"));
         return accountMenu.size() != 0 && accountMenu.get(0).isDisplayed();
     }
 

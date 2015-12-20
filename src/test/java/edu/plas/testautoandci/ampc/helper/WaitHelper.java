@@ -50,5 +50,24 @@ public class WaitHelper {
             }
         }.init(locator, attributeName, expectedValueRegex));
     }
+
+    public static void untilTextMatches(WebElement element, String expectedTextRegex, long timeOutInSeconds)
+    {
+        // adapted from http://stackoverflow.com/questions/15237129/webdriverwait-for-an-element-attribute-to-change
+        new WebDriverWait(Driver.getWebDriver(), timeOutInSeconds).until(new ExpectedCondition<Boolean>() {
+            private WebElement element;
+            private String expectedTextRegex;
+
+            private ExpectedCondition<Boolean> init(WebElement element, String expectedTextRegex) {
+                this.element = element;
+                this.expectedTextRegex = expectedTextRegex;
+                return this;
+            }
+
+            public Boolean apply(WebDriver driver) {
+                return element.getText().matches(this.expectedTextRegex);
+            }
+        }.init(element, expectedTextRegex));
+    }
 }
 

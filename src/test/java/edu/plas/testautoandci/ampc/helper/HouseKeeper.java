@@ -14,7 +14,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class CucumberBeforeAfter {
+public class HouseKeeper {
     private static boolean imagesCleaned = false;
 
     // This ensures that this @Before is always executed first
@@ -37,23 +37,33 @@ public class CucumberBeforeAfter {
         Driver.startWebDriver();
     }
 
-    @After(value="@notes", order = 10)
-    public void clearNotes(){
-        if (Boolean.valueOf(PropertyUtils.getProperty("after.notes.deletenotes"))) {
-            HomePage homePage = new HomePage();
-            if (!Driver.getWebDriver().getCurrentUrl().startsWith(SiteUrlUtils.getSiteUrl("Evernote Home"))) {
-                homePage.navigateToPage();
-                if (Driver.getWebDriver().getCurrentUrl().startsWith(SiteUrlUtils.getSiteUrl("Evernote Login"))) {
-                    LoginPage loginPage = new LoginPage();
-                    loginPage.navigateToPage();
-                    loginPage.signIn(PropertyUtils.getLoginUserName(), PropertyUtils.getLoginPassword());
-                }
+    @After(value = "@notes, @tags", order = 20)
+    public void cleanUp() {
+//        if (Boolean.valueOf(PropertyUtils.getProperty("after.notes.deletenotes"))) {
+        HomePage homePage = new HomePage();
+        if (!Driver.getWebDriver().getCurrentUrl().startsWith(SiteUrlUtils.getSiteUrl("Evernote Home"))) {
+            homePage.navigateToPage();
+            if (Driver.getWebDriver().getCurrentUrl().startsWith(SiteUrlUtils.getSiteUrl("Evernote Login"))) {
+                LoginPage loginPage = new LoginPage();
+                loginPage.navigateToPage();
+                loginPage.signIn(PropertyUtils.getLoginUserName(), PropertyUtils.getLoginPassword());
             }
-
-            homePage.getNotesList().clear();
-//        homePage.displayAccountMenu();
-//        homePage.getAccountMenu().clickLogOut();
         }
+//        }
+    }
+
+    @After(value = "@tags", order = 15)
+    public void clearTags() {
+        HomePage homePage = new HomePage();
+        homePage.getMainMenu().clickTagsButton();
+        homePage.getTagsList().deleteAllTags();
+    }
+
+    @After(value = "@notes, @tags", order = 10)
+    public void clearNotes() {
+        HomePage homePage = new HomePage();
+        homePage.getMainMenu().clickNotesButton();
+        homePage.deleteAllNotes();
     }
 
     // This ensures that this @After is always executed last
