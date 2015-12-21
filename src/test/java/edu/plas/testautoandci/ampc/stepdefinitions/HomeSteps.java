@@ -45,15 +45,13 @@ public class HomeSteps {
 
     @When("^the account is logged out from$")
     public void logOut() {
-        page.displayAccountMenu();
-        page.getAccountMenu().clickLogOut();
+        page.logOut();
     }
 
     @Then("the note with title '(.*)' and date '(.*)' is (?:still )?available in the list of notes")
     public void isNoteInList(String title, String date) {
-        System.out.println("*********** date: " + date);
         String dateRegex = "(?i)" + date.replace("NOTE_DATE_PLACEHOLDER", "\\d+ (day(s)?|hour(s)?|minute(s)?|second(s)?) ago");
-        assertTrue("Note is expected to be found in note list", page.getNotesList().containsNote(title, dateRegex));
+        assertTrue("Note is expected to be found in note list", page.isNoteInNoteList(title, dateRegex));
     }
 
     @When("the note with title '(.*)' is added to shortcuts")
@@ -73,7 +71,7 @@ public class HomeSteps {
 
     @Then("the notes under tag '(.*)' are:")
     public void checkNotesWithTag(String tag, List<String> noteTitles){
-        page.getNotesWithTag(tag);
+        assertTrue("All note titles are expected to be found under tag " + tag, page.notesHaveTag(tag, noteTitles));
     }
 
 }

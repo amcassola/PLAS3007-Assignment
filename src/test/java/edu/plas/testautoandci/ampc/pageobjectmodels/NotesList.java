@@ -20,15 +20,19 @@ import java.util.List;
  */
 public class NotesList {
 
+    protected void waitForAvailability() {
+        DriverHelper.findElement(By.id("gwt-debug-notesListView")).isDisplayed();
+    }
+
     public void waitForAdditionOfNote(String title) {
         DriverHelper.findElement(By.xpath("//*[@id='gwt-debug-notesListView']//div[text()='" + title + "' and ../div/text()='Moments ago']"));
     }
 
-    public boolean containsNote(String title) {
+    protected boolean containsNote(String title) {
         return getNotes(title, null).size() > 0;
     }
 
-    public boolean containsNote(String title, String noteDateRegex) {
+    protected boolean containsNote(String title, String noteDateRegex) {
         return getNotes(title, noteDateRegex).size() > 0;
     }
 
@@ -42,25 +46,19 @@ public class NotesList {
             return matchingNotes;
         }
 
-        System.out.println("********* Getting notes with title " + title + " and matching date regex " + noteDateRegex);
         List<WebElement> notes = getNotes();
+//        System.out.println("********* Found " + notes.size() + " notes");
+//        System.out.println("********* Getting notes with title " + title + " and matching date regex " + noteDateRegex);
 
         WebElement element;
         for (WebElement note : notes) {
-            System.out.println("************ checking note title '" + title + "'");
-//            System.out.println("===========================================================");
-//            System.out.println(Driver.getWebDriver().getPageSource());
-//            System.out.println("===========================================================");
+//            System.out.println("***** note inner html: \n" + note.getAttribute("innerHTML"));
             element = DriverHelper.findElement(note, By.cssSelector(".qa-title"));
-            System.out.println("************ found note with title text '" + element.getText() + "'");
-            System.out.println("************ found note with title class " + element.getAttribute("class"));
-//            new WebDriverWait(Driver.getWebDriver(), 5).until(ExpectedConditions.textToBePresentInElement(note, title));
+//            System.out.println("************ found note with title text '" + element.getText() + "'");
             if (element.getText().equals(title)) {
                 if (noteDateRegex != null) {
-                    System.out.println("************ checking note date " + noteDateRegex);
                     element = DriverHelper.findElement(note, By.cssSelector(".qa-date"));
-                    System.out.println("************ found note with date " + element.getText());
-                    System.out.println("************ found note with date class " + element.getAttribute("class"));
+//                    System.out.println("************ found note with date " + element.getText());
                     if (element.getText().matches(noteDateRegex)) {
                         matchingNotes.add(note);
                     }
@@ -83,9 +81,9 @@ public class NotesList {
         return DriverHelper.findElements(DriverHelper.findElement(By.id("gwt-debug-notesListView")), By.cssSelector(".focus-NotesView-Note"));
     }
 
-    protected void clickNote(String title){
+    protected void clickNote(String title) {
         List<WebElement> notes = getNotes(title, null);
-        if (notes.size() > 0){
+        if (notes.size() > 0) {
             notes.get(0).click();
         }
     }

@@ -20,37 +20,39 @@ public class DriverHelper {
         // retrieve site URL from properties file
         String url = SiteUrlUtils.getSiteUrl(site);
 
-        try {
-            Driver.getWebDriver().get(url);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to navigate to " + url, e);
+        if (!Driver.getWebDriver().getCurrentUrl().startsWith(url)) {
+            try {
+                Driver.getWebDriver().get(url);
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to navigate to " + url, e);
+            }
         }
     }
 
-    public static WebElement findElement(By locator){
+    public static WebElement findElement(By locator) {
         return findElement(null, locator);
     }
 
-    public static WebElement findElement(WebElement element, By locator){
+    public static WebElement findElement(WebElement element, By locator) {
         List<WebElement> elements = findElements(element, locator);
 
-        if (elements.size() == 1){
+        if (elements.size() == 1) {
             return elements.get(0);
         }
 
-        if (elements.size() == 0){
+        if (elements.size() == 0) {
             throw new RuntimeException("No matching elements found using locator " + locator.toString());
         }
 
         throw new RuntimeException("Multiple matching elements found using locator " + locator.toString());
     }
 
-    public static List<WebElement> findElements(By locator){
+    public static List<WebElement> findElements(By locator) {
         return findElements(null, locator);
     }
 
-    public static List<WebElement> findElements(WebElement element, By locator){
-        if (element == null){
+    public static List<WebElement> findElements(WebElement element, By locator) {
+        if (element == null) {
             return Driver.getWebDriver().findElements(locator);
         } else {
             return element.findElements(locator);

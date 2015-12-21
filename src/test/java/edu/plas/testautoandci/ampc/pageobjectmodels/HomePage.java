@@ -4,9 +4,14 @@ import edu.plas.testautoandci.ampc.Note;
 import edu.plas.testautoandci.ampc.driver.Driver;
 import edu.plas.testautoandci.ampc.helper.DriverHelper;
 import edu.plas.testautoandci.ampc.helper.FrameAndAlertHelper;
+import edu.plas.testautoandci.ampc.helper.WaitHelper;
 import edu.plas.testautoandci.ampc.utils.SiteUrlUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,30 +35,6 @@ public class HomePage extends EvernotePage {
         super("Evernote home");
     }
 
-    public MainMenu getMainMenu() {
-        return mainMenu;
-    }
-
-    public AccountMenu getAccountMenu() {
-        return accountMenu;
-    }
-
-    public NotesList getNotesList() {
-        return notesList;
-    }
-
-    public NoteSection getNoteSection() {
-        return noteSection;
-    }
-
-    public ShortcutsList getShortcutList() {
-        return shortcutsList;
-    }
-
-    public TagsList getTagsList() {
-        return tagsList;
-    }
-
     public boolean isHomePageDisplayed() {
         return Driver.getWebDriver().getCurrentUrl().startsWith(SiteUrlUtils.getSiteUrl("Evernote Home"));
     }
@@ -65,12 +46,11 @@ public class HomePage extends EvernotePage {
 
     public void displayAccountMenu() {
         accountMenu.waitForAvailability();
-
-        WebElement accountMenuItem = DriverHelper.findElement(By.id("gwt-debug-AccountMenu-avatar"));
-        accountMenuItem.click();
+        DriverHelper.findElement(By.id("gwt-debug-AccountMenu-avatar")).click();
     }
 
     public void createNote(Note note) {
+        noteSection.waitForAvailability();
         mainMenu.clickNewNoteButton();
         noteSection.createNote(note.getTitle(), note.getBody());
         noteSection.clickDoneButton();
@@ -83,31 +63,51 @@ public class HomePage extends EvernotePage {
         }
     }
 
+    public boolean isNoteInNoteList(String title, String noteDateRegex){
+        accountMenu.waitForAvailability();
+        return notesList.containsNote(title, noteDateRegex);
+    }
+
     private void confirmDelete() {
         DriverHelper.findElement(By.id("gwt-debug-ConfirmationDialog-confirm")).click();
     }
 
     public void deleteAllNotes() {
         System.out.println("********** Clearing notes.....");
+        mainMenu.clickNotesButton();
+
         List<WebElement> notes = notesList.getNotes();
 
         WebElement note;
         for (int i = notes.size(); i != 0; i--) {
-            System.out.println("******** i=" + i + ", notes.size() = " + notes.size());
+//            System.out.println("******** i=" + i + ", notes.size() = " + notes.size());
             note = notes.get(i - 1);
             note.click();
             noteSection.clickDeleteNoteButton();
             confirmDelete();
+            waitForTrashMessage();
         }
         System.out.println("********** Cleared all notes.....");
     }
 
+    public void waitForTrashMessage(){
+        By trashMessageLocator = By.xpath("//div[@id='gwt-debug-toastContainer']//span[text()='Trash']");
+        WaitHelper.disableImplicitWait();
+        new WebDriverWait(Driver.getWebDriver(), WaitHelper.EXPLICIT_WAIT_TIMEOUT).until(ExpectedConditions.visibilityOfElementLocated(trashMessageLocator));
+        new WebDriverWait(Driver.getWebDriver(), WaitHelper.EXPLICIT_WAIT_TIMEOUT).until(ExpectedConditions.invisibilityOfElementLocated(trashMessageLocator));
+        WaitHelper.enableImplicitWait();
+    }
 
     public void addNoteToShortcuts(String title){
         List<WebElement> notes = notesList.getNotes();
         if (notes.size() > 0){
             notesList.addNoteToShortcuts(notes.get(0));
         }
+    }
+
+    public void deleteAllShortcuts(){
+        mainMenu.clickShortcutsButton();
+        shortcutsList.deleteAllShortcuts();
     }
 
     public boolean isNoteUnderShortcuts(String title){
@@ -125,11 +125,50 @@ public class HomePage extends EvernotePage {
         }
     }
 
-    public List<String> getNotesWithTag(String tag){
+    public boolean notesHaveTag(String tag, List<String> titles){
         mainMenu.clickTagsButton();
         tagsList.clickTag(tag);
 
-        return new ArrayList<>();
+
+        // When tag list is clicked, the notes list is displayed with only those notes having the matching tag
+        // However, at times, the notes list is displayed with the full list of notes, and is then 'refreshed'
+        // with only the tagged notes. Hence the requirement for a pause.
+        WaitHelper.pause(2);
+
+        // check that notes under a particular tag contain the list of note titles provided
+        boolean allFound = true;
+        for (String title : titles){
+            if (notesList.getNotes(title, null).size() == 0){
+                return false;
+            }
+        }
+
+        return true;
     }
 
+    public void deleteAllTags(){
+        mainMenu.clickTagsButton();
+        tagsList.deleteAllTags();
+    }
+
+    public void logOut(){
+        boolean loggedOut = false;
+        do {
+            System.out.println("**** Attempting logout...");
+            displayAccountMenu();
+            if (accountMenu.isDisplayed()) {
+                accountMenu.clickLogOut();
+                try {
+                    Driver.getWebDriver().switchTo().alert().dismiss();
+                    WaitHelper.pause(2);
+                    // try to log out again
+                } catch (NoAlertPresentException Ex) {
+                    loggedOut = true;
+                }
+            } else {
+                throw new RuntimeException("Account Menu is not visible. Cannot log out. Account Menu must be made visible in order to log out.");
+            }
+        } while (! loggedOut);
+        System.out.println("**** Logged out!");
+    }
 }

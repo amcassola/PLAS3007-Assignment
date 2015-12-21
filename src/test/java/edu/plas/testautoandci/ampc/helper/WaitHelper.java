@@ -3,9 +3,11 @@ package edu.plas.testautoandci.ampc.helper;
 import edu.plas.testautoandci.ampc.driver.Driver;
 import edu.plas.testautoandci.ampc.utils.PropertyUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.concurrent.TimeUnit;
@@ -29,8 +31,9 @@ public class WaitHelper {
         Driver.getWebDriver().manage().timeouts().implicitlyWait(IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS);
     }
 
-    public static void untilAttributeValueMatches(By locator, String attributeName, String expectedValueRegex, long timeOutInSeconds)
+    public static void waitUntilAttributeValueMatches(By locator, String attributeName, String expectedValueRegex, long timeOutInSeconds)
     {
+        disableImplicitWait();
         // adapted from http://stackoverflow.com/questions/15237129/webdriverwait-for-an-element-attribute-to-change
         new WebDriverWait(Driver.getWebDriver(), timeOutInSeconds).until(new ExpectedCondition<Boolean>() {
             private By locator;
@@ -49,10 +52,14 @@ public class WaitHelper {
                 return element.getAttribute(this.attr).matches(this.expectedValueRegex);
             }
         }.init(locator, attributeName, expectedValueRegex));
+
+        enableImplicitWait();
     }
 
-    public static void untilTextMatches(WebElement element, String expectedTextRegex, long timeOutInSeconds)
+    public static void waitUntilTextMatches(WebElement element, String expectedTextRegex, long timeOutInSeconds)
     {
+        disableImplicitWait();
+
         // adapted from http://stackoverflow.com/questions/15237129/webdriverwait-for-an-element-attribute-to-change
         new WebDriverWait(Driver.getWebDriver(), timeOutInSeconds).until(new ExpectedCondition<Boolean>() {
             private WebElement element;
@@ -68,6 +75,12 @@ public class WaitHelper {
                 return element.getText().matches(this.expectedTextRegex);
             }
         }.init(element, expectedTextRegex));
+
+        enableImplicitWait();
+    }
+
+    public static void pause(long timeInSeconds){
+        try{Thread.sleep(timeInSeconds*1000);} catch (InterruptedException ie){}
     }
 }
 

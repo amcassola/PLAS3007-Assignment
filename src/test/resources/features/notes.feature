@@ -1,10 +1,10 @@
+@notes
 Feature: Creation of notes
 
   Background:
     Given the Evernote Home page is loaded
     And an existing account is logged in to
 
-  @notes
   Scenario: Create a note
     When a note is created with title 'Sample title' and body 'This is some body text'
     Then the note with title 'Sample title' and date 'moments ago' is available in the list of notes
@@ -13,12 +13,11 @@ Feature: Creation of notes
     And the existing account is logged in to
     Then the note with title 'Sample title' and date 'NOTE_DATE_PLACEHOLDER' is still available in the list of notes
 
-  @notes
+  @shortcuts
   Scenario: Add note to shortcuts
     When a note is created with title 'Sample note with shortcut' and body 'This is some body text for a note with a shortcut'
     And the note with title 'Sample note with shortcut' is added to shortcuts
     Then the note with title 'Sample note with shortcut' is visible under the shortcut list
-
 
   @tags
   Scenario: Using tags

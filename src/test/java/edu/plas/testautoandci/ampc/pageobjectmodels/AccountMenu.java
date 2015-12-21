@@ -1,13 +1,9 @@
 package edu.plas.testautoandci.ampc.pageobjectmodels;
 
-import edu.plas.testautoandci.ampc.driver.Driver;
 import edu.plas.testautoandci.ampc.helper.DriverHelper;
 import edu.plas.testautoandci.ampc.helper.WaitHelper;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebElement;
-
-import java.util.List;
 
 /**
  * Write something about this class here
@@ -23,28 +19,16 @@ public class AccountMenu {
     }
 
     public void waitForAvailability() {
-        WaitHelper.disableImplicitWait();
-        WaitHelper.untilAttributeValueMatches(By.cssSelector(".GOSDSN-CJP"), "src", "^.*/shard/.*/user/.*$", WaitHelper.EXPLICIT_WAIT_TIMEOUT);
-        WaitHelper.enableImplicitWait();
+        WaitHelper.waitUntilAttributeValueMatches(By.cssSelector(".GOSDSN-CJP"), "src", "^.*/shard/.*/user/.*$", WaitHelper.EXPLICIT_WAIT_TIMEOUT);
     }
 
     public void clickLogOut() {
-        if (this.isDisplayed()) {
-            WebElement logOutMenuItem = DriverHelper.findElement(By.id("gwt-debug-AccountMenu-logout"));
-            logOutMenuItem.click();
-            try {
-                Driver.getWebDriver().switchTo().alert().dismiss();
-                logOutMenuItem.click();
-            } catch (NoAlertPresentException Ex) {
-            }
-        } else {
-            throw new RuntimeException("Account Menu is not visible. Cannot log out. Account Menu must be made visible in order to log out.");
-        }
+        WebElement logOutMenuItem = DriverHelper.findElement(By.id("gwt-debug-AccountMenu-logout"));
+        logOutMenuItem.click();
     }
 
     public boolean isDisplayed() {
-        List<WebElement> accountMenu = DriverHelper.findElements(By.id("gwt-debug-AccountMenuPopup-root"));
-        return accountMenu.size() != 0 && accountMenu.get(0).isDisplayed();
+        return DriverHelper.findElement(By.id("gwt-debug-AccountMenuPopup-root")).isDisplayed();
     }
 
 }

@@ -26,12 +26,17 @@ public class Driver {
 
     public static WebDriver getWebDriver() {
         if (driver == null) {
-            throw new IllegalStateException("Selenium WebDriver is not initialised!");
+            browser = System.getProperty("browser");
+            if (browser == null){
+                throw new NullPointerException("Browser option was not set. System property browser is expected to be found.");
+            }
+            startWebDriver();
+//            throw new IllegalStateException("Selenium WebDriver is not initialised!");
         }
         return driver;
     }
 
-    public static void startWebDriver() {
+    private static void startWebDriver() {
         // Check whether driver has already been initialised
         if (driver != null) {
             throw new IllegalStateException("Selenium WebDriver has already been initialised!");
@@ -94,6 +99,27 @@ public class Driver {
         } catch (Exception e) {
             throw new RuntimeException("Failed to initialize Selenium WebDriver!", e);
         }
+
+        // prepare web driver shutdown commands so that web driver will be terminated at the end of the test run
+        prepareWebDriverShutDown();
+    }
+
+    private static void prepareWebDriverShutDown(){
+        Runtime.getRuntime().addShutdownHook(new Thread()
+        {
+            @Override
+            public void run()
+            {
+                shutDownWebDriver();
+            }
+        });
+    }
+
+    public static void shutDownWebDriver(){
+        if (driver != null) {
+            driver.quit();
+            nullWebDriver();
+        }
     }
 
     public static String getBrowser() {
@@ -104,7 +130,7 @@ public class Driver {
         Driver.browser = browser;
     }
 
-    public static void nullWebDriver() {
+    private static void nullWebDriver() {
         driver = null;
     }
 }

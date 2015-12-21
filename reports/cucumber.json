@@ -1,0 +1,773 @@
+[
+  {
+    "line": 2,
+    "elements": [
+      {
+        "line": 4,
+        "name": "",
+        "description": "",
+        "type": "background",
+        "keyword": "Background",
+        "steps": [
+          {
+            "result": {
+              "duration": 22585802585,
+              "status": "passed"
+            },
+            "line": 5,
+            "name": "the Evernote Home page is loaded",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Evernote Home",
+                  "offset": 4
+                }
+              ],
+              "location": "NavigationSteps.siteIsLoaded(String)"
+            },
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 21527257354,
+              "status": "passed"
+            },
+            "line": 6,
+            "name": "an existing account is logged in to",
+            "match": {
+              "location": "LoginSteps.logInWithValidCredentialsForExistingAccount()"
+            },
+            "keyword": "And "
+          }
+        ]
+      },
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 164540634,
+              "status": "passed"
+            },
+            "match": {
+              "location": "HouseKeeper.setup()"
+            }
+          }
+        ],
+        "line": 9,
+        "name": "Log out",
+        "description": "",
+        "id": "creation-of-notes;log-out",
+        "after": [
+          {
+            "result": {
+              "duration": 11000794215,
+              "status": "passed"
+            },
+            "match": {
+              "location": "HouseKeeper.cleanUp()"
+            }
+          },
+          {
+            "result": {
+              "duration": 12460138708,
+              "status": "passed"
+            },
+            "match": {
+              "location": "HouseKeeper.clearNotes()"
+            }
+          },
+          {
+            "result": {
+              "duration": 246776,
+              "status": "passed"
+            },
+            "match": {
+              "location": "HouseKeeper.tearDown(Scenario)"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 6956410132,
+              "status": "passed"
+            },
+            "line": 10,
+            "name": "a note is created with title \u0027Sample title\u0027 and body \u0027This is some body text\u0027",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Sample title",
+                  "offset": 30
+                },
+                {
+                  "val": "This is some body text",
+                  "offset": 54
+                }
+              ],
+              "location": "HomeSteps.createNote(String,String)"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 291626999,
+              "status": "passed"
+            },
+            "line": 11,
+            "name": "the note with title \u0027Sample title\u0027 and date \u0027moments ago\u0027 is available in the list of notes",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Sample title",
+                  "offset": 21
+                },
+                {
+                  "val": "moments ago",
+                  "offset": 45
+                }
+              ],
+              "location": "HomeSteps.isNoteInList(String,String)"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 12536491546,
+              "status": "passed"
+            },
+            "line": 12,
+            "name": "the account is logged out from",
+            "match": {
+              "location": "HomeSteps.logOut()"
+            },
+            "keyword": "When "
+          }
+        ],
+        "tags": [
+          {
+            "line": 8,
+            "name": "@logout"
+          }
+        ]
+      },
+      {
+        "line": 4,
+        "name": "",
+        "description": "",
+        "type": "background",
+        "keyword": "Background",
+        "steps": [
+          {
+            "result": {
+              "duration": 18159167,
+              "status": "passed"
+            },
+            "line": 5,
+            "name": "the Evernote Home page is loaded",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Evernote Home",
+                  "offset": 4
+                }
+              ],
+              "location": "NavigationSteps.siteIsLoaded(String)"
+            },
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 93802899,
+              "status": "passed"
+            },
+            "line": 6,
+            "name": "an existing account is logged in to",
+            "match": {
+              "location": "LoginSteps.logInWithValidCredentialsForExistingAccount()"
+            },
+            "keyword": "And "
+          }
+        ]
+      },
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 95374,
+              "status": "passed"
+            },
+            "match": {
+              "location": "HouseKeeper.setup()"
+            }
+          }
+        ],
+        "line": 15,
+        "name": "Log out",
+        "description": "",
+        "id": "creation-of-notes;log-out",
+        "after": [
+          {
+            "result": {
+              "duration": 10665215952,
+              "status": "passed"
+            },
+            "match": {
+              "location": "HouseKeeper.cleanUp()"
+            }
+          },
+          {
+            "result": {
+              "duration": 10499071919,
+              "status": "passed"
+            },
+            "match": {
+              "location": "HouseKeeper.clearNotes()"
+            }
+          },
+          {
+            "result": {
+              "duration": 103072,
+              "status": "passed"
+            },
+            "match": {
+              "location": "HouseKeeper.tearDown(Scenario)"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 3961201937,
+              "status": "passed"
+            },
+            "line": 16,
+            "name": "a note is created with title \u0027Sample title\u0027 and body \u0027This is some body text\u0027",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Sample title",
+                  "offset": 30
+                },
+                {
+                  "val": "This is some body text",
+                  "offset": 54
+                }
+              ],
+              "location": "HomeSteps.createNote(String,String)"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 303785287,
+              "status": "passed"
+            },
+            "line": 17,
+            "name": "the note with title \u0027Sample title\u0027 and date \u0027moments ago\u0027 is available in the list of notes",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Sample title",
+                  "offset": 21
+                },
+                {
+                  "val": "moments ago",
+                  "offset": 45
+                }
+              ],
+              "location": "HomeSteps.isNoteInList(String,String)"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 7788933854,
+              "status": "passed"
+            },
+            "line": 18,
+            "name": "the account is logged out from",
+            "match": {
+              "location": "HomeSteps.logOut()"
+            },
+            "keyword": "When "
+          }
+        ],
+        "tags": [
+          {
+            "line": 14,
+            "name": "@logout"
+          }
+        ]
+      },
+      {
+        "line": 4,
+        "name": "",
+        "description": "",
+        "type": "background",
+        "keyword": "Background",
+        "steps": [
+          {
+            "result": {
+              "duration": 21527630,
+              "status": "passed"
+            },
+            "line": 5,
+            "name": "the Evernote Home page is loaded",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Evernote Home",
+                  "offset": 4
+                }
+              ],
+              "location": "NavigationSteps.siteIsLoaded(String)"
+            },
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 20873269,
+              "status": "passed"
+            },
+            "line": 6,
+            "name": "an existing account is logged in to",
+            "match": {
+              "location": "LoginSteps.logInWithValidCredentialsForExistingAccount()"
+            },
+            "keyword": "And "
+          }
+        ]
+      },
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 141565,
+              "status": "passed"
+            },
+            "match": {
+              "location": "HouseKeeper.setup()"
+            }
+          }
+        ],
+        "line": 21,
+        "name": "Log out",
+        "description": "",
+        "id": "creation-of-notes;log-out",
+        "after": [
+          {
+            "result": {
+              "duration": 10324610655,
+              "status": "passed"
+            },
+            "match": {
+              "location": "HouseKeeper.cleanUp()"
+            }
+          },
+          {
+            "result": {
+              "duration": 9846557418,
+              "status": "passed"
+            },
+            "match": {
+              "location": "HouseKeeper.clearNotes()"
+            }
+          },
+          {
+            "result": {
+              "duration": 106922,
+              "status": "passed"
+            },
+            "match": {
+              "location": "HouseKeeper.tearDown(Scenario)"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 4911556447,
+              "status": "passed"
+            },
+            "line": 22,
+            "name": "a note is created with title \u0027Sample title\u0027 and body \u0027This is some body text\u0027",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Sample title",
+                  "offset": 30
+                },
+                {
+                  "val": "This is some body text",
+                  "offset": 54
+                }
+              ],
+              "location": "HomeSteps.createNote(String,String)"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 385271654,
+              "status": "passed"
+            },
+            "line": 23,
+            "name": "the note with title \u0027Sample title\u0027 and date \u0027moments ago\u0027 is available in the list of notes",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Sample title",
+                  "offset": 21
+                },
+                {
+                  "val": "moments ago",
+                  "offset": 45
+                }
+              ],
+              "location": "HomeSteps.isNoteInList(String,String)"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 4270323904,
+              "status": "passed"
+            },
+            "line": 24,
+            "name": "the account is logged out from",
+            "match": {
+              "location": "HomeSteps.logOut()"
+            },
+            "keyword": "When "
+          }
+        ],
+        "tags": [
+          {
+            "line": 20,
+            "name": "@logout"
+          }
+        ]
+      },
+      {
+        "line": 4,
+        "name": "",
+        "description": "",
+        "type": "background",
+        "keyword": "Background",
+        "steps": [
+          {
+            "result": {
+              "duration": 23592076,
+              "status": "passed"
+            },
+            "line": 5,
+            "name": "the Evernote Home page is loaded",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Evernote Home",
+                  "offset": 4
+                }
+              ],
+              "location": "NavigationSteps.siteIsLoaded(String)"
+            },
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 18620213,
+              "status": "passed"
+            },
+            "line": 6,
+            "name": "an existing account is logged in to",
+            "match": {
+              "location": "LoginSteps.logInWithValidCredentialsForExistingAccount()"
+            },
+            "keyword": "And "
+          }
+        ]
+      },
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 127023,
+              "status": "passed"
+            },
+            "match": {
+              "location": "HouseKeeper.setup()"
+            }
+          }
+        ],
+        "line": 27,
+        "name": "Log out",
+        "description": "",
+        "id": "creation-of-notes;log-out",
+        "after": [
+          {
+            "result": {
+              "duration": 9990899246,
+              "status": "passed"
+            },
+            "match": {
+              "location": "HouseKeeper.cleanUp()"
+            }
+          },
+          {
+            "result": {
+              "duration": 10525656948,
+              "status": "passed"
+            },
+            "match": {
+              "location": "HouseKeeper.clearNotes()"
+            }
+          },
+          {
+            "result": {
+              "duration": 104783,
+              "status": "passed"
+            },
+            "match": {
+              "location": "HouseKeeper.tearDown(Scenario)"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 4529963758,
+              "status": "passed"
+            },
+            "line": 28,
+            "name": "a note is created with title \u0027Sample title\u0027 and body \u0027This is some body text\u0027",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Sample title",
+                  "offset": 30
+                },
+                {
+                  "val": "This is some body text",
+                  "offset": 54
+                }
+              ],
+              "location": "HomeSteps.createNote(String,String)"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 455134341,
+              "status": "passed"
+            },
+            "line": 29,
+            "name": "the note with title \u0027Sample title\u0027 and date \u0027moments ago\u0027 is available in the list of notes",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Sample title",
+                  "offset": 21
+                },
+                {
+                  "val": "moments ago",
+                  "offset": 45
+                }
+              ],
+              "location": "HomeSteps.isNoteInList(String,String)"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 4370731576,
+              "status": "passed"
+            },
+            "line": 30,
+            "name": "the account is logged out from",
+            "match": {
+              "location": "HomeSteps.logOut()"
+            },
+            "keyword": "When "
+          }
+        ],
+        "tags": [
+          {
+            "line": 26,
+            "name": "@logout"
+          }
+        ]
+      },
+      {
+        "line": 4,
+        "name": "",
+        "description": "",
+        "type": "background",
+        "keyword": "Background",
+        "steps": [
+          {
+            "result": {
+              "duration": 22775621,
+              "status": "passed"
+            },
+            "line": 5,
+            "name": "the Evernote Home page is loaded",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Evernote Home",
+                  "offset": 4
+                }
+              ],
+              "location": "NavigationSteps.siteIsLoaded(String)"
+            },
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 23041643,
+              "status": "passed"
+            },
+            "line": 6,
+            "name": "an existing account is logged in to",
+            "match": {
+              "location": "LoginSteps.logInWithValidCredentialsForExistingAccount()"
+            },
+            "keyword": "And "
+          }
+        ]
+      },
+      {
+        "before": [
+          {
+            "result": {
+              "duration": 117186,
+              "status": "passed"
+            },
+            "match": {
+              "location": "HouseKeeper.setup()"
+            }
+          }
+        ],
+        "line": 33,
+        "name": "Log out",
+        "description": "",
+        "id": "creation-of-notes;log-out",
+        "after": [
+          {
+            "result": {
+              "duration": 10659215930,
+              "status": "passed"
+            },
+            "match": {
+              "location": "HouseKeeper.cleanUp()"
+            }
+          },
+          {
+            "result": {
+              "duration": 9695248140,
+              "status": "passed"
+            },
+            "match": {
+              "location": "HouseKeeper.clearNotes()"
+            }
+          },
+          {
+            "result": {
+              "duration": 82971,
+              "status": "passed"
+            },
+            "match": {
+              "location": "HouseKeeper.tearDown(Scenario)"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 4148640083,
+              "status": "passed"
+            },
+            "line": 34,
+            "name": "a note is created with title \u0027Sample title\u0027 and body \u0027This is some body text\u0027",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Sample title",
+                  "offset": 30
+                },
+                {
+                  "val": "This is some body text",
+                  "offset": 54
+                }
+              ],
+              "location": "HomeSteps.createNote(String,String)"
+            },
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 426287702,
+              "status": "passed"
+            },
+            "line": 35,
+            "name": "the note with title \u0027Sample title\u0027 and date \u0027moments ago\u0027 is available in the list of notes",
+            "match": {
+              "arguments": [
+                {
+                  "val": "Sample title",
+                  "offset": 21
+                },
+                {
+                  "val": "moments ago",
+                  "offset": 45
+                }
+              ],
+              "location": "HomeSteps.isNoteInList(String,String)"
+            },
+            "keyword": "Then "
+          },
+          {
+            "result": {
+              "duration": 4429307601,
+              "status": "passed"
+            },
+            "line": 36,
+            "name": "the account is logged out from",
+            "match": {
+              "location": "HomeSteps.logOut()"
+            },
+            "keyword": "When "
+          }
+        ],
+        "tags": [
+          {
+            "line": 32,
+            "name": "@logout"
+          }
+        ]
+      }
+    ],
+    "name": "Creation of notes",
+    "description": "",
+    "id": "creation-of-notes",
+    "keyword": "Feature",
+    "uri": "notes.feature",
+    "tags": [
+      {
+        "line": 1,
+        "name": "@notes"
+      }
+    ]
+  }
+]

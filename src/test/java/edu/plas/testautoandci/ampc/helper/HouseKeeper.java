@@ -33,8 +33,8 @@ public class HouseKeeper {
             imagesCleaned = true;
         }
 
-        Driver.setBrowser(System.getProperty("browser"));
-        Driver.startWebDriver();
+//        Driver.setBrowser(System.getProperty("browser"));
+//        Driver.startWebDriver();
     }
 
     @After(value = "@notes, @tags", order = 20)
@@ -52,18 +52,19 @@ public class HouseKeeper {
 //        }
     }
 
-    @After(value = "@tags", order = 15)
-    public void clearTags() {
-        HomePage homePage = new HomePage();
-        homePage.getMainMenu().clickTagsButton();
-        homePage.getTagsList().deleteAllTags();
+    @After(value = "@shortcuts", order = 5)
+    public void clearShortcuts() {
+        new HomePage().deleteAllShortcuts();
     }
 
-    @After(value = "@notes, @tags", order = 10)
+//    @After(value = "@tags", order = 15)
+//    public void clearTags() {
+//        new HomePage().deleteAllTags();
+//    }
+
+    @After(value = "@notes", order = 10)
     public void clearNotes() {
-        HomePage homePage = new HomePage();
-        homePage.getMainMenu().clickNotesButton();
-        homePage.deleteAllNotes();
+        new HomePage().deleteAllNotes();
     }
 
     // This ensures that this @After is always executed last
@@ -76,9 +77,6 @@ public class HouseKeeper {
             ScreenShotHelper.takeScreenShot(scenario);
         }
 
-        if (Driver.getWebDriver() != null) {
-            Driver.getWebDriver().quit();
-            Driver.nullWebDriver();
-        }
+//        Driver.shutDownWebDriver();
     }
 }
