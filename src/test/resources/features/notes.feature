@@ -19,6 +19,21 @@ Feature: Creation of notes
     And the note with title 'Sample note with shortcut' is added to shortcuts
     Then the note with title 'Sample note with shortcut' is visible under the shortcut list
 
+  @trashcan
+  Scenario: Trash can
+    When notes are created with title and body:
+      | title                       | body                                                        |
+      | Sample note to be deleted 1 | This is some body text for a note that will be deleted soon |
+      | Sample note to be deleted 2 | This is some body text for a note that will be deleted soon |
+      | Sample note to be deleted 3 | This is some body text for a note that will be deleted soon |
+    When all notes are deleted
+    Then the trash can contains the notes with title:
+      | Sample note to be deleted 1 |
+      | Sample note to be deleted 2 |
+      | Sample note to be deleted 3 |
+    When the trash can is emptied
+    Then there are no notes in the trash can
+
   @tags
   Scenario: Using tags
     When notes are created with title and body:

@@ -15,7 +15,11 @@ Tried using id, css selector but still not displaying menu. ]
 Incorrect login credentials:
 What is the best way to handle dynamic messages?
 
-Note creation: could not find the right elements to use to input title and body. Elements are either not visible so interaction cannot be done with them or nothing happens. Boqqqqqqqqqqqqqqqq.
+Note creation: could not find the right elements to use to input title and body. Elements are either not visible so interaction cannot be done with them or nothing happens. Boqqqqqqqqqqqqqqqq. <- solved by checking for notebook
+Logging out before new note visible in list left new note with Untitled title. Added wait for addition in list (check for moments ago in note list)
 
+Deletion of notes: issues with staleness, visibility
+
+Javascript executor??
 
 
