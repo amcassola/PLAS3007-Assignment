@@ -32,20 +32,17 @@ public class HouseKeeper {
             }
             imagesCleaned = true;
         }
-
-//        Driver.setBrowser(System.getProperty("browser"));
-//        Driver.startWebDriver();
     }
 
-    @After(value = "@notes, @tags", order = 20)
-    public void cleanUp() {
+    @After(value = "@notes", order = 20)
+    public void logIn() {
 //        if (Boolean.valueOf(PropertyUtils.getProperty("after.notes.deletenotes"))) {
         HomePage homePage = new HomePage();
-        if (!Driver.getWebDriver().getCurrentUrl().startsWith(SiteUrlUtils.getSiteUrl("Evernote Home"))) {
+        if (!homePage.isHomePageDisplayed()) {
             homePage.navigateToPage();
-            if (Driver.getWebDriver().getCurrentUrl().startsWith(SiteUrlUtils.getSiteUrl("Evernote Login"))) {
-                LoginPage loginPage = new LoginPage();
-                loginPage.navigateToPage();
+            LoginPage loginPage = new LoginPage();
+            if (loginPage.isLoginPageDisplayed()) {
+//                loginPage.navigateToPage();
                 loginPage.signIn(PropertyUtils.getLoginUserName(), PropertyUtils.getLoginPassword());
             }
         }
@@ -56,6 +53,12 @@ public class HouseKeeper {
     public void clearShortcuts() {
         new HomePage().deleteAllShortcuts();
     }
+
+    @After(value = "@notebooks", order = 10)
+    public void clearNotebooks() {
+        new HomePage().deleteNotebooks();
+    }
+
 
 //    @After(value = "@tags", order = 15)
 //    public void clearTags() {

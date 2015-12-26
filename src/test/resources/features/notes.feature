@@ -7,17 +7,24 @@ Feature: Creation of notes
 
   Scenario: Create a note
     When a note is created with title 'Sample title' and body 'This is some body text'
-    Then the note with title 'Sample title' and date 'moments ago' is available in the list of notes
+    Then the note with title 'Sample title' is available in the list of notes
     When the account is logged out from
     And the Evernote Login page is loaded
     And the existing account is logged in to
-    Then the note with title 'Sample title' and date 'NOTE_DATE_PLACEHOLDER' is still available in the list of notes
+    Then the note with title 'Sample title' is still available in the list of notes
 
   @shortcuts
   Scenario: Add note to shortcuts
     When a note is created with title 'Sample note with shortcut' and body 'This is some body text for a note with a shortcut'
     And the note with title 'Sample note with shortcut' is added to shortcuts
     Then the note with title 'Sample note with shortcut' is visible under the shortcut list
+
+  @notebooks
+  Scenario: Adding notes to notebooks
+    When a notebook is created with title 'My test notebook'
+    And a note is created in notebook 'My test notebook' with title 'Sample note for test notebook' and body 'This is some body text for a note in a notebook'
+    Then the note with title 'Sample note for test notebook' is available under notebook 'My test notebook'
+    And the note with title 'Sample note for test notebook' is not available under notebook 'DEFAULT_NOTEBOOK_PLACEHOLDER'
 
   @trashcan
   Scenario: Trash can
@@ -33,6 +40,13 @@ Feature: Creation of notes
       | Sample note to be deleted 3 |
     When the trash can is emptied
     Then there are no notes in the trash can
+
+  @trashcan
+  Scenario: Restoring notes from trash can
+    When a note is created with title 'Sample note to be restored' and body 'This is some body text for a note that will be deleted then restored'
+    When the note with title 'Sample note to be restored' is deleted
+    And the note with title 'Sample note to be restored' is restored
+    Then the note with title 'Sample note to be restored' is available in the list of notes
 
   @tags
   Scenario: Using tags

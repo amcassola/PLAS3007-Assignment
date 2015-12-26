@@ -40,10 +40,14 @@ public class DriverHelper {
             return elements.get(0);
         }
 
-        if (elements.size() == 0) {
+        if (elements.isEmpty()) {
             throw new RuntimeException("No matching elements found using locator " + locator.toString());
         }
 
+//        System.out.println("*****" + element.getAttribute("innerHTML"));
+//        for (WebElement e : elements){
+//            System.out.println("*****" + e.getAttribute("innerHTML"));
+//        }
         throw new RuntimeException("Multiple matching elements found using locator " + locator.toString());
     }
 

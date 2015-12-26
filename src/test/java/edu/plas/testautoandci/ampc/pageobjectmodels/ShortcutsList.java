@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class ShortcutsList {
 
-    public boolean containsNote(String title) {
+    protected boolean containsNote(String title) {
         return getNotes(title).size() > 0;
     }
 
@@ -45,11 +45,10 @@ public class ShortcutsList {
     }
 
     protected List<WebElement> getNotes() {
-//        return DriverHelper.findElements(DriverHelper.findElement(By.id("gwt-debug-DrawerView-root")), By.cssSelector(".qa-shortcutWidget"));
         return DriverHelper.findElements(DriverHelper.findElement(By.id("gwt-debug-ShortcutsDrawerView-root")), By.cssSelector(".qa-shortcutWidget"));
     }
 
-    public void deleteAllShortcuts() {
+    protected void deleteAllShortcuts() {
         System.out.println("********** Clearing shortcuts.....");
         // find delete buttons
         List<WebElement> deleteButtons = DriverHelper.findElements(DriverHelper.findElement(By.id("gwt-debug-ShortcutsDrawerView-root")), By.cssSelector(".GOSDSN-CGWB"));
@@ -64,10 +63,10 @@ public class ShortcutsList {
 //            System.out.println("******** shortcuts is displayed: " + clickableContainer.isDisplayed());
             new Actions(Driver.getWebDriver()).moveToElement(clickableContainer).perform();
 
-            boolean displayed = button.isDisplayed();
+//            boolean displayed = button.isDisplayed();
 //            System.out.println("*** delete shortcut button is displayed: " + displayed);
 
-            if (displayed){
+            if (button.isDisplayed()){
 //                System.out.println("*** About to click delete shortcut button");
                 button.click();
 //                System.out.println("*** About to click delete shortcut button");
@@ -93,7 +92,7 @@ public class ShortcutsList {
         System.out.println("********** Cleared all shortcuts.....");
     }
 
-    public boolean isDisplayed() {
+    protected boolean isDisplayed() {
         return DriverHelper.findElement(By.id("gwt-debug-ShortcutsDrawerView-root")).isDisplayed();
     }
 }

@@ -13,21 +13,21 @@ import org.openqa.selenium.WebElement;
  */
 public class AccountMenu {
 
-    public String getAccountUsername() {
+    protected String getAccountUsername() {
         WebElement accountName = DriverHelper.findElement(By.id("gwt-debug-AccountMenu-name"));
         return accountName.getText();
     }
 
-    public void waitForAvailability() {
+    protected void waitForAvailability() {
         WaitHelper.waitUntilAttributeValueMatches(By.cssSelector(".GOSDSN-CJP"), "src", "^.*/shard/.*/user/.*$", WaitHelper.EXPLICIT_WAIT_TIMEOUT);
     }
 
-    public void clickLogOut() {
+    protected void clickLogOut() {
         WebElement logOutMenuItem = DriverHelper.findElement(By.id("gwt-debug-AccountMenu-logout"));
         logOutMenuItem.click();
     }
 
-    public boolean isDisplayed() {
+    protected boolean isDisplayed() {
         return DriverHelper.findElement(By.id("gwt-debug-AccountMenuPopup-root")).isDisplayed();
     }
 

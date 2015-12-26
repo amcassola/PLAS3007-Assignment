@@ -6,6 +6,10 @@ import edu.plas.testautoandci.ampc.helper.WaitHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
+
+import java.util.List;
 
 /**
  * Write something about this class here
@@ -20,8 +24,16 @@ public class NoteSection {
     }
 
     protected void createNote(String title, String body) {
-        inputTitle(title);
-        inputBody(body);
+        createNote(title, body, null);
+    }
+
+    protected void createNote(String noteTitle, String noteBody, String notebookTitle){
+        if (notebookTitle != null){
+            selectNotebook(notebookTitle);
+        }
+
+        inputTitle(noteTitle);
+        inputBody(noteBody);
     }
 
     protected void clickDoneButton() {
@@ -52,6 +64,28 @@ public class NoteSection {
         return DriverHelper.findElement(By.id("tinymce"));
     }
 
+    private void selectNotebook(String title){
+        WebElement currentNotebook = DriverHelper.findElement(By.id("gwt-debug-NotebookSelectMenu-notebookName"));
+        currentNotebook.click();
+
+        List<WebElement> availableNotebooks = DriverHelper.findElements(DriverHelper.findElement(By.id("gwt-debug-notebookSelectMenu-slidingPanel")), By.cssSelector(".qa-name"));
+        for (WebElement notebook : availableNotebooks){
+            if (notebook.getText().equals(title)){
+                notebook.click();
+                waitForNotebookChangedMessage();
+                return;
+            }
+        }
+
+        throw new RuntimeException("No notebook with title " + title + " was found");
+    }
+
+    public void waitForNotebookChangedMessage(){
+        By messageLocator = By.xpath("//div[@id='gwt-debug-toastContainer']//div[starts-with(text(), 'Note moved')]");
+        WaitHelper.waitUntil(ExpectedConditions.visibilityOfElementLocated(messageLocator));
+        WaitHelper.waitUntil(ExpectedConditions.invisibilityOfElementLocated(messageLocator));
+    }
+
     protected void clickDeleteNoteButton() {
         DriverHelper.findElement(By.id("gwt-debug-NoteAttributes-trashButton")).click();
     }
@@ -69,16 +103,12 @@ public class NoteSection {
         tagInput.sendKeys(Keys.RETURN);
     }
 
-    protected void waitForAdditionOfTag(String tag) {
-        // make sure focus is in main frame
-        FrameAndAlertHelper.switchToTopFrame();
-        DriverHelper.findElement(By.xpath("//*[@id='gwt-debug-NoteTagsView-tagInputBox-lozengeInput']//span[text()='" + tag + "']"));
-    }
-
     private void waitForNonEmptyBody() {
         switchToBodyFrame();
         WebElement bodyInput = getBodyInputElement();
+        WaitHelper.disableImplicitWait();
         WaitHelper.waitUntilTextMatches(bodyInput, ".+", 5);
+        WaitHelper.enableImplicitWait();
     }
 
 }

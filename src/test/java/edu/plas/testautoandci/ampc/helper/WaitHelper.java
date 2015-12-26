@@ -31,6 +31,15 @@ public class WaitHelper {
         Driver.getWebDriver().manage().timeouts().implicitlyWait(IMPLICIT_WAIT_TIMEOUT, TimeUnit.SECONDS);
     }
 
+    public static <T> T waitUntil(ExpectedCondition<T> expectedCondition){
+        disableImplicitWait();
+        try {
+            return new WebDriverWait(Driver.getWebDriver(), EXPLICIT_WAIT_TIMEOUT).until(expectedCondition);
+        } finally {
+            enableImplicitWait();
+        }
+    }
+
     public static void waitUntilAttributeValueMatches(By locator, String attributeName, String expectedValueRegex, long timeOutInSeconds)
     {
         disableImplicitWait();

@@ -24,25 +24,52 @@ public class NotesList {
         DriverHelper.findElement(By.id("gwt-debug-notesListView")).isDisplayed();
     }
 
-    public void waitForAdditionOfNote(String title) {
+    protected void waitForNoteCountToChange(int expectedCount) {
+        WebElement noteCountElement = DriverHelper.findElement(DriverHelper.findElement(By.id("gwt-debug-notesListView")), By.cssSelector(".qa-notesCount"));
+        WaitHelper.waitUntilTextMatches(noteCountElement, expectedCount + " note(s)?", WaitHelper.EXPLICIT_WAIT_TIMEOUT);
+    }
+
+    protected void waitForAdditionOfNote(String title) {
         DriverHelper.findElement(By.xpath("//*[@id='gwt-debug-notesListView']//div[text()='" + title + "' and ../div/text()='Moments ago']"));
     }
 
-    protected boolean containsNote(String title) {
-        return getNotes(title, null).size() > 0;
+    protected void waitForRemovalOfNote(String title) {
+        WaitHelper.waitUntil(ExpectedConditions.not(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//*[@id='gwt-debug-notesListView']//div[text()='" + title + "']"))));
     }
 
-    protected boolean containsNote(String title, String noteDateRegex) {
-        return getNotes(title, noteDateRegex).size() > 0;
+    /**
+     * Check that notes list contains notes with all of the given titles
+     *
+     * @param titles
+     * @return true or false
+     */
+    protected boolean containsAllNotes(List<String> titles) {
+        boolean allFound = true;
+        for (String title : titles) {
+            if (getNotes(title).isEmpty()) {
+                allFound = false;
+            }
+        }
+
+        return allFound;
+    }
+
+    protected boolean containsNote(String title) {
+        return ! getNotes(title).isEmpty();
+    }
+
+    protected List<WebElement> getNotes(String title) {
+        return getNotes(title, null);
     }
 
     protected List<WebElement> getNotes(String title, String noteDateRegex) {
         List<WebElement> matchingNotes = new ArrayList<>();
 
-        // check that there is at least 1 note with a non-blank title
-        List<WebElement> titleElements = DriverHelper.findElements(By.xpath("//div[@id='gwt-debug-notesListView']//div[contains(@class,'qa-title') and not(text()='')]"));
+        // check that there is at least 1 note with a non-blank title and neither with a title 'Loading...'
+        List<WebElement> titleElements = DriverHelper.findElements(By.xpath("//div[@id='gwt-debug-notesListView']//div[contains(@class,'qa-title') and not(text()='' or text='Loading...')]"));
 
-        if (titleElements.size() == 0) {
+        if (titleElements.isEmpty()) {
+//            System.out.print("******** Note title elements is empty - no notes found!");
             return matchingNotes;
         }
 
@@ -82,10 +109,29 @@ public class NotesList {
     }
 
     protected void clickNote(String title) {
-        List<WebElement> notes = getNotes(title, null);
-        if (notes.size() > 0) {
+        List<WebElement> notes = getNotes(title);
+        if (!notes.isEmpty()) {
             notes.get(0).click();
         }
+    }
+
+    protected void clickEmptyTrashButton() {
+        DriverHelper.findElement(DriverHelper.findElement(By.id("gwt-debug-trashHeaderContainer")), By.tagName("button")).click();
+    }
+
+    protected void restoreNoteFromTrashCan(WebElement note) {
+        WebElement restoreButton = DriverHelper.findElement(note, By.xpath(".//button[text()='Restore']"));
+        new Actions(Driver.getWebDriver()).moveToElement(note).perform();
+        restoreButton.click();
+    }
+
+    protected boolean isTrashCanDisplayed() {
+        List<WebElement> trashCanElement = DriverHelper.findElements(By.id("gwt-debug-trashHeaderContainer"));
+        if (!trashCanElement.isEmpty()) {
+            // assumption that there will always be 1
+            return trashCanElement.get(0).isDisplayed();
+        }
+        return false;
     }
 
 }

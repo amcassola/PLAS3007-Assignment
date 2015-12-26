@@ -13,25 +13,27 @@ import org.openqa.selenium.WebElement;
  */
 public class MainMenu {
 
-//    public void waitForAvailability() {
-//        WaitHelper.disableImplicitWait();
-//       new WebDriverWait(Driver.getWebDriver(), WaitHelper.EXPLICIT_WAIT_TIMEOUT).until(ExpectedConditions.presenceOfElementLocated(By.id("gwt-debug-Sidebar-newNoteButton")));
-//        WaitHelper.enableImplicitWait();
-//    }
-
-    public void clickNewNoteButton() {
+    protected void clickNewNoteButton() {
         DriverHelper.findElement(By.id("gwt-debug-Sidebar-newNoteButton")).click();
     }
 
-    public void clickShortcutsButton() {
+    protected void clickSearchButton() {
+        DriverHelper.findElement(By.id("gwt-debug-Sidebar-searchButton")).click();
+    }
+
+    protected void clickShortcutsButton() {
         DriverHelper.findElement(By.id("gwt-debug-Sidebar-shortcutsButton")).click();
     }
 
-    public void clickNotesButton() {
+    protected void clickNotesButton() {
         DriverHelper.findElement(By.id("gwt-debug-Sidebar-notesButton")).click();
     }
 
-    public void clickTagsButton() {
+    protected void clickNotebooksButton() {
+        DriverHelper.findElement(By.id("gwt-debug-Sidebar-notebooksButton")).click();
+    }
+
+    protected void clickTagsButton() {
         DriverHelper.findElement(By.id("gwt-debug-Sidebar-tagsButton")).click();
     }
 

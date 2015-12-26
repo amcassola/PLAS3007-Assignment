@@ -2,6 +2,7 @@ package edu.plas.testautoandci.ampc.pageobjectmodels;
 
 import edu.plas.testautoandci.ampc.driver.Driver;
 import edu.plas.testautoandci.ampc.helper.DriverHelper;
+import edu.plas.testautoandci.ampc.helper.FrameAndAlertHelper;
 import edu.plas.testautoandci.ampc.helper.WaitHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -22,6 +23,12 @@ public class TagsList {
 
     protected void clickTag(String tagName){
         getTag(tagName).click();
+    }
+
+    protected void waitForAdditionOfTag(String tag) {
+        // make sure focus is in main frame
+        FrameAndAlertHelper.switchToTopFrame();
+        DriverHelper.findElement(By.xpath("//*[@id='gwt-debug-NoteTagsView-tagInputBox-lozengeInput']//span[text()='" + tag + "']"));
     }
 
     private WebElement getTag(String tagName) {
@@ -46,7 +53,7 @@ public class TagsList {
         return DriverHelper.findElements(DriverHelper.findElement(By.id("gwt-debug-DrawerView-root")), By.cssSelector(".qa-tagWidget"));
     }
 
-    public void deleteAllTags() {
+    protected void deleteAllTags() {
         System.out.println("********** Clearing tags.....");
         // find delete buttons
         List<WebElement> deleteButtons = DriverHelper.findElements(By.cssSelector(".focus-drawer-TagsDrawer-TagSelectable-delete-icon"));
@@ -77,7 +84,7 @@ public class TagsList {
         DriverHelper.findElement(By.id("gwt-debug-ConfirmationDialog-confirm")).click();
     }
 
-    public boolean isDisplayed() {
+    protected boolean isDisplayed() {
         return DriverHelper.findElement(By.cssSelector("#gwt-debug-DrawerView-root .qa-tags-drawer")).isDisplayed();
     }
 
