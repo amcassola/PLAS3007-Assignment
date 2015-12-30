@@ -30,11 +30,13 @@ public class LoginPage extends EvernotePage {
 
     private void populateUserName(String username){
         WebElement usernameInput = Driver.getWebDriver().findElement(By.id("username"));
+        usernameInput.clear();
         usernameInput.sendKeys(username);
     }
 
     private void populatePassword(String password){
         WebElement passwordInput = Driver.getWebDriver().findElement(By.id("password"));
+        passwordInput.clear();
         passwordInput.sendKeys(password);
     }
 
