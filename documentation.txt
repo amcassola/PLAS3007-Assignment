@@ -23,3 +23,15 @@ Deletion of notes: issues with staleness, visibility
 Javascript executor??
 
 
+Jenkins installation:
+1. downloaded jenkins-1.643.zip
+2. ran setup file
+3. jenkins started up automatically
+4. stopped jenkins
+5. changed port
+6. restarted jenkins
+7. installed git plugin
+8. added system configuration for java
+8. added system configuration for maven
+9. added system configuration for git
+
