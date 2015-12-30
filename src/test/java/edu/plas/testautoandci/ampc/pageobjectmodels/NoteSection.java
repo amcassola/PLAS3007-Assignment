@@ -1,14 +1,17 @@
 package edu.plas.testautoandci.ampc.pageobjectmodels;
 
+import edu.plas.testautoandci.ampc.driver.Driver;
 import edu.plas.testautoandci.ampc.helper.DriverHelper;
 import edu.plas.testautoandci.ampc.helper.FrameAndAlertHelper;
 import edu.plas.testautoandci.ampc.helper.WaitHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,31 +30,71 @@ public class NoteSection {
         createNote(title, body, null);
     }
 
-    protected void createNote(String noteTitle, String noteBody, String notebookTitle){
-        if (notebookTitle != null){
+    protected void createNote(String noteTitle, String noteBody, String notebookTitle) {
+        if (notebookTitle != null) {
             selectNotebook(notebookTitle);
         }
 
         inputTitle(noteTitle);
-        inputBody(noteBody);
+        inputBodyText(noteBody);
     }
 
     protected void clickDoneButton() {
         DriverHelper.findElement(By.xpath("//button[@id='gwt-debug-NoteAttributes-doneButton' and text()='Done']")).click();
     }
 
-    private void inputTitle(String title) {
-        DriverHelper.findElement(By.id("gwt-debug-NoteTitleView-textBox")).sendKeys(title);
+    protected void clickCancelButton() {
+        DriverHelper.findElement(By.xpath("//button[@id='gwt-debug-NoteAttributes-doneButton' and text()='Cancel']")).click();
     }
 
-    private void inputBody(String body) {
-        switchToBodyFrame();
+    protected void clickExpandButton() {
+        DriverHelper.findElement(By.id("gwt-debug-NoteAttributes-focusButton")).click();
+    }
 
-        WebElement bodyInput = getBodyInputElement();
-        bodyInput.click();
-        bodyInput.sendKeys(body);
+    protected void inputTitle(String title) {
+        getTitleElement().sendKeys(title);
+    }
 
-        FrameAndAlertHelper.switchToParentFrame();
+    protected String getTitle() {
+        return getTitleElement().getText();
+    }
+
+    private WebElement getTitleElement() {
+        return DriverHelper.findElement(By.id("gwt-debug-NoteTitleView-textBox"));
+    }
+
+    private void inputBodyText(String body) {
+        try {
+            switchToBodyFrame();
+
+            WebElement bodyInput = getBodyInputElement();
+            bodyInput.click();
+            bodyInput.sendKeys(body);
+        } finally {
+            FrameAndAlertHelper.switchToTopFrame();
+        }
+    }
+
+    protected void addTableToBody(int rows, int columns) {
+        try {
+            switchToBodyFrame();
+
+            WebElement bodyInput = getBodyInputElement();
+            bodyInput.click();
+
+            FrameAndAlertHelper.switchToTopFrame();
+
+            // click table button
+            WebElement tableButton = DriverHelper.findElement(By.id("gwt-debug-FormattingBar-tableButton"));
+            tableButton.isDisplayed();
+            tableButton.click();
+
+            WebElement tableSizeRow = DriverHelper.findElements(By.cssSelector(".GOSDSN-CDN")).get(rows - 1);
+            WebElement tableSizeColumn = DriverHelper.findElements(tableSizeRow, By.cssSelector(".GOSDSN-CEN")).get(columns - 1);
+            tableSizeColumn.click();
+        } finally {
+            FrameAndAlertHelper.switchToTopFrame();
+        }
     }
 
     private void switchToBodyFrame() {
@@ -64,13 +107,31 @@ public class NoteSection {
         return DriverHelper.findElement(By.id("tinymce"));
     }
 
-    private void selectNotebook(String title){
+    protected boolean bodyContainsTable(int rows, int columns) {
+        try {
+            switchToBodyFrame();
+
+            List<WebElement> tableRows = DriverHelper.findElements(By.tagName("tr"));
+            if (tableRows.isEmpty() && rows == 0){
+                // if there are no rows there can be no columns, so if columns != 0 then fail
+                return columns == 0;
+            }
+            if (tableRows.size() == rows){
+                return DriverHelper.findElements(tableRows.get(0), By.tagName("td")).size() == columns;
+            }
+            return false;
+        } finally {
+            FrameAndAlertHelper.switchToTopFrame();
+        }
+    }
+
+    private void selectNotebook(String title) {
         WebElement currentNotebook = DriverHelper.findElement(By.id("gwt-debug-NotebookSelectMenu-notebookName"));
         currentNotebook.click();
 
         List<WebElement> availableNotebooks = DriverHelper.findElements(DriverHelper.findElement(By.id("gwt-debug-notebookSelectMenu-slidingPanel")), By.cssSelector(".qa-name"));
-        for (WebElement notebook : availableNotebooks){
-            if (notebook.getText().equals(title)){
+        for (WebElement notebook : availableNotebooks) {
+            if (notebook.getText().equals(title)) {
                 notebook.click();
                 waitForNotebookChangedMessage();
                 return;
@@ -80,7 +141,7 @@ public class NoteSection {
         throw new RuntimeException("No notebook with title " + title + " was found");
     }
 
-    public void waitForNotebookChangedMessage(){
+    public void waitForNotebookChangedMessage() {
         By messageLocator = By.xpath("//div[@id='gwt-debug-toastContainer']//div[starts-with(text(), 'Note moved')]");
         WaitHelper.waitUntil(ExpectedConditions.visibilityOfElementLocated(messageLocator));
         WaitHelper.waitUntil(ExpectedConditions.invisibilityOfElementLocated(messageLocator));

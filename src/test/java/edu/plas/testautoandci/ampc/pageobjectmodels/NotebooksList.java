@@ -8,7 +8,6 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,7 +34,7 @@ public class NotebooksList {
         } catch (WebDriverException wde) {
             System.out.println("******** ...trying to click notebook again...");
             // wait 1 seconds and retry
-            WaitHelper.pause(1);
+            WaitHelper.simplyWait(1);
             createNotebookButton.click();
         }
     }
@@ -46,7 +45,6 @@ public class NotebooksList {
     }
 
     protected String getNotebookTitle(WebElement notebook){
-//        System.out.println("**** " + notebook.getAttribute("innerHTML"));
         return DriverHelper.findElement(notebook, By.cssSelector(".qa-name")).getText();
     }
 
@@ -70,7 +68,7 @@ public class NotebooksList {
         } catch (WebDriverException wde) {
             System.out.println("******* ...trying to click delete again...");
             // wait 1 seconds and retry
-            WaitHelper.pause(1);
+            WaitHelper.simplyWait(1);
             deleteButton.click();
         }
     }

@@ -2,7 +2,9 @@ package edu.plas.testautoandci.ampc.pageobjectmodels;
 
 import edu.plas.testautoandci.ampc.driver.Driver;
 import edu.plas.testautoandci.ampc.helper.DriverHelper;
+import edu.plas.testautoandci.ampc.helper.WaitHelper;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 /**
@@ -14,27 +16,37 @@ import org.openqa.selenium.WebElement;
 public class MainMenu {
 
     protected void clickNewNoteButton() {
-        DriverHelper.findElement(By.id("gwt-debug-Sidebar-newNoteButton")).click();
+        clickMenuItem(DriverHelper.findElement(By.id("gwt-debug-Sidebar-newNoteButton")));
     }
 
     protected void clickSearchButton() {
-        DriverHelper.findElement(By.id("gwt-debug-Sidebar-searchButton")).click();
+        clickMenuItem(DriverHelper.findElement(By.id("gwt-debug-Sidebar-searchButton")));
     }
 
     protected void clickShortcutsButton() {
-        DriverHelper.findElement(By.id("gwt-debug-Sidebar-shortcutsButton")).click();
+        clickMenuItem(DriverHelper.findElement(By.id("gwt-debug-Sidebar-shortcutsButton")));
     }
 
     protected void clickNotesButton() {
-        DriverHelper.findElement(By.id("gwt-debug-Sidebar-notesButton")).click();
+        clickMenuItem(DriverHelper.findElement(By.id("gwt-debug-Sidebar-notesButton")));
     }
 
     protected void clickNotebooksButton() {
-        DriverHelper.findElement(By.id("gwt-debug-Sidebar-notebooksButton")).click();
+        clickMenuItem(DriverHelper.findElement(By.id("gwt-debug-Sidebar-notebooksButton")));
     }
 
     protected void clickTagsButton() {
-        DriverHelper.findElement(By.id("gwt-debug-Sidebar-tagsButton")).click();
+        clickMenuItem(DriverHelper.findElement(By.id("gwt-debug-Sidebar-tagsButton")));
     }
 
+    private void clickMenuItem(WebElement menuButton){
+        try {
+            menuButton.click();
+        } catch (WebDriverException wde) {
+            System.out.println("******* ...trying to click menu item again...");
+            // wait 1 second and retry
+            WaitHelper.simplyWait(1);
+            menuButton.click();
+        }
+    }
 }

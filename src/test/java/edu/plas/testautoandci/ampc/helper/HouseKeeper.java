@@ -36,34 +36,20 @@ public class HouseKeeper {
 
     @After(value = "@notes", order = 20)
     public void logIn() {
-//        if (Boolean.valueOf(PropertyUtils.getProperty("after.notes.deletenotes"))) {
         HomePage homePage = new HomePage();
         if (!homePage.isHomePageDisplayed()) {
             homePage.navigateToPage();
             LoginPage loginPage = new LoginPage();
             if (loginPage.isLoginPageDisplayed()) {
-//                loginPage.navigateToPage();
                 loginPage.signIn(PropertyUtils.getLoginUserName(), PropertyUtils.getLoginPassword());
             }
         }
-//        }
-    }
-
-    @After(value = "@shortcuts", order = 5)
-    public void clearShortcuts() {
-        new HomePage().deleteAllShortcuts();
     }
 
     @After(value = "@notebooks", order = 10)
     public void clearNotebooks() {
         new HomePage().deleteNotebooks();
     }
-
-
-//    @After(value = "@tags", order = 15)
-//    public void clearTags() {
-//        new HomePage().deleteAllTags();
-//    }
 
     @After(value = "@notes", order = 10)
     public void clearNotes() {
@@ -79,7 +65,5 @@ public class HouseKeeper {
             scenario.write("Time of failure: " + dateFormat.format(Calendar.getInstance().getTime()));
             ScreenShotHelper.takeScreenShot(scenario);
         }
-
-//        Driver.shutDownWebDriver();
     }
 }

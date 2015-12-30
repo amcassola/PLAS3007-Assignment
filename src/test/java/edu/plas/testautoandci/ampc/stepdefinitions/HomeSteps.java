@@ -53,12 +53,6 @@ public class HomeSteps {
         page.logOut();
     }
 
-//    @Then("^the note with title '(.*)' and date '(.*)' is (?:still )?available in the list of notes$")
-//    public void isNoteInList(String title, String date) {
-//        String dateRegex = date == null ? null : "(?i)" + date.replace("NOTE_DATE_PLACEHOLDER", "\\d+ (day(s)?|hour(s)?|minute(s)?|second(s)?) ago");
-//        assertTrue("Note is expected to be found in note list", page.isNoteInNoteList(title, dateRegex));
-//    }
-
     @Then("^the note with title '(.*)' is (?:still )?available in the list of notes$")
     public void isNoteInList(String title) {
         assertTrue("Note is expected to be found in note list", page.isNoteInNoteList(title));
@@ -74,6 +68,26 @@ public class HomeSteps {
         assertTrue("Note is expected to be found in shortcut list", page.isNoteUnderShortcuts(title));
     }
 
+    @When("^a note is created with title '(.*)' and body containing a table with ([0-6]) rows and ([0-6]) columns$")
+    public void addTableToNoteBody(String title, int rows, int columns){
+        page.createNoteWithTable(title, rows, columns);
+    }
+
+    @Then("^the note with title '(.*)' has a table with ([0-6]) rows and ([0-6]) columns$")
+    public void noteContainsTable(String title, int rows, int columns){
+        assertTrue("Note with title " + title + "expected contain table", page.noteContainsTable(title, rows, columns));
+    }
+
+    @Then("^the notes are sorted by (.*)$")
+    public void sortNotes(String order){
+        page.sortNotesList(order);
+    }
+
+    @Then("^the notes in the notes list are in the following order:$")
+    public void checkNoteOrdering(List<String> titlesInExpectedOrder){
+        assertTrue("Notes are expected to be ordered as selected", page.checkNotesOrdering(titlesInExpectedOrder));
+    }
+
     @When("^all notes are deleted$")
     public void deleteAllNotes(){
         page.deleteAllNotes();
@@ -82,6 +96,16 @@ public class HomeSteps {
     @When("the note with title '(.*)' is deleted")
     public void deleteNote(String title){
         page.deleteNote(title);
+    }
+
+    @When ("^notes are searched for using the text '(.*)'$")
+    public void searchNotes(String text){
+        page.searchNotes(text);
+    }
+
+    @Then("^(\\d+) note(?:s)? (?:is|are) found$")
+    public void checkNumberOfNotesFound(int expectedCount){
+        assertEquals("Number of notes expected to match", expectedCount, page.getNoteCount());
     }
 
     @When("^a notebook is created with title '(.*)'$")
@@ -104,7 +128,7 @@ public class HomeSteps {
 
     @Then("^the trash can contains the notes with title:$")
     public void trashCanContainsNotes(List<String> titles){
-        page.trashCanContainsNotes(titles);
+        assertTrue("Trash can is expected to contain notes", page.trashCanContainsNotes(titles));
     }
 
     @When("^the trash can is emptied$")

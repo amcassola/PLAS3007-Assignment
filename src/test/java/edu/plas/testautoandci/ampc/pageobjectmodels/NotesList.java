@@ -10,6 +10,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,20 +23,29 @@ import java.util.List;
 public class NotesList {
 
     protected void waitForAvailability() {
-        DriverHelper.findElement(By.id("gwt-debug-notesListView")).isDisplayed();
+        // wait until notes count is filled in
+        WaitHelper.waitUntilTextMatches(getNotesCountElement(), "\\d+ note(s)?", 3);
+    }
+
+    protected boolean isDisplayed() {
+        return getNoteListViewElement().isDisplayed();
+    }
+
+    private WebElement getNoteListViewElement() {
+        return DriverHelper.findElement(By.id("gwt-debug-notesListView"));
+    }
+
+    private WebElement getNotesCountElement() {
+        return DriverHelper.findElement(getNoteListViewElement(), By.cssSelector(".qa-notesCount"));
     }
 
     protected void waitForNoteCountToChange(int expectedCount) {
-        WebElement noteCountElement = DriverHelper.findElement(DriverHelper.findElement(By.id("gwt-debug-notesListView")), By.cssSelector(".qa-notesCount"));
+        WebElement noteCountElement = DriverHelper.findElement(getNoteListViewElement(), By.cssSelector(".qa-notesCount"));
         WaitHelper.waitUntilTextMatches(noteCountElement, expectedCount + " note(s)?", WaitHelper.EXPLICIT_WAIT_TIMEOUT);
     }
 
     protected void waitForAdditionOfNote(String title) {
         DriverHelper.findElement(By.xpath("//*[@id='gwt-debug-notesListView']//div[text()='" + title + "' and ../div/text()='Moments ago']"));
-    }
-
-    protected void waitForRemovalOfNote(String title) {
-        WaitHelper.waitUntil(ExpectedConditions.not(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//*[@id='gwt-debug-notesListView']//div[text()='" + title + "']"))));
     }
 
     /**
@@ -55,7 +66,7 @@ public class NotesList {
     }
 
     protected boolean containsNote(String title) {
-        return ! getNotes(title).isEmpty();
+        return !getNotes(title).isEmpty();
     }
 
     protected List<WebElement> getNotes(String title) {
@@ -69,24 +80,14 @@ public class NotesList {
         List<WebElement> titleElements = DriverHelper.findElements(By.xpath("//div[@id='gwt-debug-notesListView']//div[contains(@class,'qa-title') and not(text()='' or text='Loading...')]"));
 
         if (titleElements.isEmpty()) {
-//            System.out.print("******** Note title elements is empty - no notes found!");
             return matchingNotes;
         }
 
         List<WebElement> notes = getNotes();
-//        System.out.println("********* Found " + notes.size() + " notes");
-//        System.out.println("********* Getting notes with title " + title + " and matching date regex " + noteDateRegex);
-
-        WebElement element;
         for (WebElement note : notes) {
-//            System.out.println("***** note inner html: \n" + note.getAttribute("innerHTML"));
-            element = DriverHelper.findElement(note, By.cssSelector(".qa-title"));
-//            System.out.println("************ found note with title text '" + element.getText() + "'");
-            if (element.getText().equals(title)) {
+            if (getNoteTitle(note).equals(title)) {
                 if (noteDateRegex != null) {
-                    element = DriverHelper.findElement(note, By.cssSelector(".qa-date"));
-//                    System.out.println("************ found note with date " + element.getText());
-                    if (element.getText().matches(noteDateRegex)) {
+                    if (getNoteDate(note).matches(noteDateRegex)) {
                         matchingNotes.add(note);
                     }
                 } else {
@@ -98,6 +99,18 @@ public class NotesList {
         return matchingNotes;
     }
 
+    protected String getTitleOfNoteAtPosition(int position){
+        return DriverHelper.findElement(By.xpath("(//div[@id='gwt-debug-notesListView']//div[contains(@class,'qa-title') and not(text()='' or text='Loading...')])[" + position + "]")).getText();
+    }
+
+    protected String getNoteTitle(WebElement note) {
+        return DriverHelper.findElement(note, By.cssSelector(".qa-title")).getText();
+    }
+
+    protected String getNoteDate(WebElement note) {
+        return DriverHelper.findElement(note, By.cssSelector(".qa-date")).getText();
+    }
+
     protected void addNoteToShortcuts(WebElement note) {
         WebElement shortcutButton = DriverHelper.findElement(note, By.cssSelector(".qa-shortcutButton"));
         new Actions(Driver.getWebDriver()).moveToElement(shortcutButton).perform();
@@ -105,7 +118,7 @@ public class NotesList {
     }
 
     protected List<WebElement> getNotes() {
-        return DriverHelper.findElements(DriverHelper.findElement(By.id("gwt-debug-notesListView")), By.cssSelector(".focus-NotesView-Note"));
+        return DriverHelper.findElements(getNoteListViewElement(), By.cssSelector(".focus-NotesView-Note"));
     }
 
     protected void clickNote(String title) {
@@ -115,8 +128,24 @@ public class NotesList {
         }
     }
 
+    private WebElement getNotesOptions() {
+        return DriverHelper.findElement(By.cssSelector(".qa-notesOptions"));
+    }
+
+    protected void selectListOrdering(String order) {
+        WebElement notesOptions = getNotesOptions();
+        notesOptions.click();
+
+        DriverHelper.findElement(DriverHelper.findElement(notesOptions, By.cssSelector(".Selector")), By.xpath("./div[text()='" + order + "']")).click();
+    }
+
+    protected String getSelectedOrderOption() {
+        return DriverHelper.findElement(getNotesOptions(), By.cssSelector(".SelectorOption-selected")).getText();
+    }
+
+
     protected void clickEmptyTrashButton() {
-        DriverHelper.findElement(DriverHelper.findElement(By.id("gwt-debug-trashHeaderContainer")), By.tagName("button")).click();
+        DriverHelper.findElement(getTrashHeaderElement(), By.tagName("button")).click();
     }
 
     protected void restoreNoteFromTrashCan(WebElement note) {
@@ -126,12 +155,15 @@ public class NotesList {
     }
 
     protected boolean isTrashCanDisplayed() {
-        List<WebElement> trashCanElement = DriverHelper.findElements(By.id("gwt-debug-trashHeaderContainer"));
-        if (!trashCanElement.isEmpty()) {
-            // assumption that there will always be 1
-            return trashCanElement.get(0).isDisplayed();
+        try {
+            WebElement trashCanElement = getTrashHeaderElement();
+            return trashCanElement.isDisplayed();
+        } catch (RuntimeException e) {
+            return false;
         }
-        return false;
     }
 
+    private WebElement getTrashHeaderElement() {
+        return DriverHelper.findElement(By.id("gwt-debug-trashHeaderContainer"));
+    }
 }

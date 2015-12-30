@@ -1,5 +1,7 @@
 package edu.plas.testautoandci.ampc;
 
+import java.util.Calendar;
+
 /**
  * Write something about this class here
  *
@@ -9,6 +11,7 @@ package edu.plas.testautoandci.ampc;
 public class Note {
     private String title;
     private String body;
+    private Calendar creationDate;
 
     public Note(){}
     public Note(String title, String body){
@@ -30,5 +33,13 @@ public class Note {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public Calendar getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Calendar date) {
+        this.creationDate = date;
     }
 }

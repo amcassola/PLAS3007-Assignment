@@ -88,7 +88,7 @@ public class WaitHelper {
         enableImplicitWait();
     }
 
-    public static void pause(long timeInSeconds){
+    public static void simplyWait(long timeInSeconds){
         try{Thread.sleep(timeInSeconds*1000);} catch (InterruptedException ie){}
     }
 }
