@@ -3,6 +3,7 @@ package edu.plas.testautoandci.ampc.pageobjectmodels;
 import edu.plas.testautoandci.ampc.driver.Driver;
 import edu.plas.testautoandci.ampc.helper.DriverHelper;
 import edu.plas.testautoandci.ampc.helper.WaitHelper;
+import edu.plas.testautoandci.ampc.utils.PropertyUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -45,7 +46,7 @@ public class MainMenu {
         } catch (WebDriverException wde) {
             System.out.println("******* ...trying to click menu item again...");
             // wait 1 second and retry
-            WaitHelper.simplyWait(1);
+            WaitHelper.simplyWait(PropertyUtils.getPropertyAsInt("wait.retry"));
             menuButton.click();
         }
     }

@@ -46,7 +46,7 @@ public class NotesList {
 
     protected void waitForAdditionOfNote(String title) {
 //        DriverHelper.findElement(By.xpath("//*[@id='gwt-debug-notesListView']//div[text()='" + title + "' and ../div/text()='Moments ago']"));
-        DriverHelper.findElement(By.xpath("//*[@id='gwt-debug-notesListView']//div[text()='" + title + "']"));
+        DriverHelper.findElements(By.xpath("//*[@id='gwt-debug-notesListView']//div[text()='" + title + "']"));
     }
 
     /**

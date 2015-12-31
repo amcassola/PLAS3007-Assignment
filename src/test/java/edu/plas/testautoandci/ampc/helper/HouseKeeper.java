@@ -34,6 +34,14 @@ public class HouseKeeper {
         }
     }
 
+    @After(value = "@requiresLogout", order = 20)
+    public void logout() {
+        HomePage homePage = new HomePage();
+        if (homePage.isHomePageDisplayed()) {
+            homePage.logOut();
+        }
+    }
+
     @After(value = "@notes", order = 20)
     public void logIn() {
         HomePage homePage = new HomePage();
@@ -44,6 +52,11 @@ public class HouseKeeper {
                 loginPage.signIn(PropertyUtils.getLoginUserName(), PropertyUtils.getLoginPassword());
             }
         }
+    }
+
+    @After(value = "@sorting", order = 10)
+    public void resetSortingOption() {
+        new HomePage().sortNotesList("Date Updated (newest first)");
     }
 
     @After(value = "@notebooks", order = 10)
@@ -57,7 +70,7 @@ public class HouseKeeper {
     }
 
     // This ensures that this @After is always executed last
-    @After(order = 0)
+    @After(order = 100)
     public void tearDown(Scenario scenario) {
         // If Cucumber scenario fails, output time of failure and take screen shot
         if (scenario.isFailed()) {

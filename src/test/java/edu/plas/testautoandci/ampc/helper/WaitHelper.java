@@ -89,6 +89,7 @@ public class WaitHelper {
     }
 
     public static void simplyWait(long timeInSeconds){
+        System.out.println("**** Waiting " + timeInSeconds + "s");
         try{Thread.sleep(timeInSeconds*1000);} catch (InterruptedException ie){}
     }
 }

@@ -2,6 +2,7 @@ package edu.plas.testautoandci.ampc.pageobjectmodels;
 
 import edu.plas.testautoandci.ampc.helper.DriverHelper;
 import edu.plas.testautoandci.ampc.helper.WaitHelper;
+import edu.plas.testautoandci.ampc.utils.PropertyUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriverException;
@@ -35,7 +36,7 @@ public class SearchSection {
         } catch (WebDriverException wde) {
             System.out.println("******* ...trying to click search box again...");
             // wait 1 second and retry
-            WaitHelper.simplyWait(1);
+            WaitHelper.simplyWait(PropertyUtils.getPropertyAsInt("wait.retry"));
             searchBox.click();
         }
 

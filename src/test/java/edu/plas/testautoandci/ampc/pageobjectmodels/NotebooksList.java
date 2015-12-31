@@ -3,6 +3,7 @@ package edu.plas.testautoandci.ampc.pageobjectmodels;
 import edu.plas.testautoandci.ampc.driver.Driver;
 import edu.plas.testautoandci.ampc.helper.DriverHelper;
 import edu.plas.testautoandci.ampc.helper.WaitHelper;
+import edu.plas.testautoandci.ampc.utils.PropertyUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -34,7 +35,7 @@ public class NotebooksList {
         } catch (WebDriverException wde) {
             System.out.println("******** ...trying to click notebook again...");
             // wait 1 seconds and retry
-            WaitHelper.simplyWait(1);
+            WaitHelper.simplyWait(PropertyUtils.getPropertyAsInt("wait.retry"));
             createNotebookButton.click();
         }
     }
@@ -68,15 +69,29 @@ public class NotebooksList {
         } catch (WebDriverException wde) {
             System.out.println("******* ...trying to click delete again...");
             // wait 1 seconds and retry
-            WaitHelper.simplyWait(1);
+            WaitHelper.simplyWait(PropertyUtils.getPropertyAsInt("wait.retry"));
             deleteButton.click();
         }
     }
 
     protected void goToTrashCan(){
+        System.out.println("******* gototrash 1");
         waitForAvailability();
+        System.out.println("******* gototrash 2");
         WebElement trashCanElement = DriverHelper.findElement(By.cssSelector(".qa-trash"));
-        trashCanElement.click();
+        System.out.println("******* gototrash 3");
+        try{
+            System.out.println("******* gototrash 4");
+            trashCanElement.click();
+            System.out.println("******* gototrash 5");
+        } catch (WebDriverException wde) {
+            System.out.println("******* ...trying to click delete again...");
+            // wait 1 seconds and retry
+            WaitHelper.simplyWait(PropertyUtils.getPropertyAsInt("wait.retry"));
+            System.out.println("******* gototrash 6");
+            trashCanElement.click();
+            System.out.println("******* gototrash 7");
+        }
     }
 
 }

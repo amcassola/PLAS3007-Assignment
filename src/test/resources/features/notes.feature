@@ -25,6 +25,7 @@ Feature: Creation of notes
     | title                     | body                                              |
     | Sample note with shortcut | This is some body text for a note with a shortcut |
 
+  @table
   Scenario Outline: Add a table to note body
     When a note is created with title '<title>' and body containing a table with <rows> rows and <columns> columns
     Then the note with title '<title>' has a table with <rows> rows and <columns> columns
@@ -33,6 +34,7 @@ Feature: Creation of notes
     | Sample note with table | 3    | 3       |
 #    | Another note with a table | 4    | 4       |
 
+  @notes
   @sorting
   Scenario: Sorting
     When notes are created with title and body:
@@ -48,18 +50,18 @@ Feature: Creation of notes
     When the notes are sorted by Date Created (newest first)
     Then the notes in the notes list are in the following order:
       | One more sample note for sorting |
-      | Another sample note for sorting |
-      | Sample note for sorting |
+      | Another sample note for sorting  |
+      | Sample note for sorting          |
     When the notes are sorted by Title (ascending)
     Then the notes in the notes list are in the following order:
-      | Another sample note for sorting |
+      | Another sample note for sorting  |
       | One more sample note for sorting |
-      | Sample note for sorting |
+      | Sample note for sorting          |
     When the notes are sorted by Title (descending)
     Then the notes in the notes list are in the following order:
-      | Sample note for sorting |
+      | Sample note for sorting          |
       | One more sample note for sorting |
-      | Another sample note for sorting |
+      | Another sample note for sorting  |
 
   @search
   Scenario: Search notes

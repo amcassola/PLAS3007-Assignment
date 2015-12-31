@@ -163,7 +163,7 @@ public class HomePage extends EvernotePage {
         return shortcutsList.containsNote(title);
     }
 
-    public boolean noteContainsTable(String title, int rows, int columns){
+    public boolean noteContainsTable(String title, int rows, int columns) {
         accountMenu.waitForAvailability();
         mainMenu.clickNotesButton();
         List<WebElement> notes = notesList.getNotes(title);
@@ -176,7 +176,7 @@ public class HomePage extends EvernotePage {
         return noteSection.bodyContainsTable(rows, columns);
     }
 
-    public void sortNotesList(String order){
+    public void sortNotesList(String order) {
         mainMenu.clickNotesButton();
         notesList.selectListOrdering(order);
 
@@ -184,12 +184,12 @@ public class HomePage extends EvernotePage {
         WaitHelper.simplyWait(PropertyUtils.getPropertyAsInt("wait.noteslist"));
     }
 
-    public boolean checkNotesOrdering(List<String> titlesInExpectedOrder){
+    public boolean checkNotesOrdering(List<String> titlesInExpectedOrder) {
         mainMenu.clickNotesButton();
 
-        for (int i = 0; i < titlesInExpectedOrder.size(); i ++){
+        for (int i = 0; i < titlesInExpectedOrder.size(); i++) {
             String actualNoteTitle = notesList.getTitleOfNoteAtPosition(i + 1);
-            if (! titlesInExpectedOrder.get(i).equals(actualNoteTitle)){
+            if (!titlesInExpectedOrder.get(i).equals(actualNoteTitle)) {
                 return false;
             }
         }
@@ -344,6 +344,7 @@ public class HomePage extends EvernotePage {
     public void logOut() {
         boolean loggedOut = false;
         do {
+//            System.out.println("****** ...Attempting to log out...");
             displayAccountMenu();
             if (accountMenu.isDisplayed()) {
                 accountMenu.clickLogOut();

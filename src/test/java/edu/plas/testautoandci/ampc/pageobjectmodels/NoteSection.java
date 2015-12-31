@@ -98,8 +98,16 @@ public class NoteSection {
     }
 
     private void switchToBodyFrame() {
+        // body frame id for creation of note
+        String bodyFrameId = "entinymce_170_ifr";
+        WebElement bodyFrame = DriverHelper.findElement(By.id(bodyFrameId));
+        if (! bodyFrame.isDisplayed()) {
+            // body frame id for existing note
+            bodyFrameId = "EN_IframePanel_0";
+        }
+
         WaitHelper.disableImplicitWait();
-        FrameAndAlertHelper.switchToFrame("entinymce_170_ifr");
+        FrameAndAlertHelper.switchToFrame(bodyFrameId);
         WaitHelper.enableImplicitWait();
     }
 
