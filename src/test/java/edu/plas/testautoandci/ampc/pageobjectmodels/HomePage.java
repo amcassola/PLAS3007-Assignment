@@ -105,7 +105,7 @@ public class HomePage extends EvernotePage {
         } catch (WebDriverException wde) {
             System.out.println("******* ...trying to click note again...");
             // wait 2 seconds and retry
-            WaitHelper.simplyWait(2);
+            WaitHelper.simplyWait(PropertyUtils.getPropertyAsInt("wait.retry"));
             note.click();
         }
         noteSection.clickDeleteNoteButton();
@@ -131,7 +131,7 @@ public class HomePage extends EvernotePage {
         } catch (WebDriverException wde) {
             System.out.println("******* ...trying to click notes menu item again...");
             // wait 2 seconds and retry
-            WaitHelper.simplyWait(1);
+            WaitHelper.simplyWait(PropertyUtils.getPropertyAsInt("wait.retry"));
             mainMenu.clickNotesButton();
         }
 
@@ -158,11 +158,6 @@ public class HomePage extends EvernotePage {
         }
     }
 
-//    public void deleteAllShortcuts() {
-//        mainMenu.clickShortcutsButton();
-//        shortcutsList.deleteAllShortcuts();
-//    }
-
     public boolean isNoteUnderShortcuts(String title) {
         mainMenu.clickShortcutsButton();
         return shortcutsList.containsNote(title);
@@ -186,7 +181,7 @@ public class HomePage extends EvernotePage {
         notesList.selectListOrdering(order);
 
         // When notes are reordered, refreshing of the notes list may take a moment, so a short wait is required
-        WaitHelper.simplyWait(1);
+        WaitHelper.simplyWait(PropertyUtils.getPropertyAsInt("wait.noteslist"));
     }
 
     public boolean checkNotesOrdering(List<String> titlesInExpectedOrder){
@@ -211,7 +206,7 @@ public class HomePage extends EvernotePage {
         // When searching, the notes list is displayed with the matching results.
         // However, at times, the notes list is displayed with the full list of notes, and is then 'refreshed'
         // with only the matching notes. Hence the requirement for a pause.
-        WaitHelper.simplyWait(2);
+        WaitHelper.simplyWait(PropertyUtils.getPropertyAsInt("wait.noteslist"));
 
     }
 
@@ -243,7 +238,7 @@ public class HomePage extends EvernotePage {
         // When trash can is displayed, the notes list is displayed with only those notes in the trash
         // However, at times, the notes list is displayed with the full list of notes, and is then 'refreshed'
         // with only the tagged notes. Hence the requirement for a pause.
-        WaitHelper.simplyWait(2);
+        WaitHelper.simplyWait(PropertyUtils.getPropertyAsInt("wait.noteslist"));
 
         return notesList.containsNote(noteTitle);
 
@@ -283,6 +278,11 @@ public class HomePage extends EvernotePage {
     private void goToTrashCan() {
         mainMenu.clickNotebooksButton();
         notebooksList.goToTrashCan();
+
+        // When trash can is displayed, the notes list is displayed with only those notes in the trash
+        // However, at times, the notes list is displayed with the full list of notes, and is then 'refreshed'
+        // with only the tagged notes. Hence the requirement for a pause.
+        WaitHelper.simplyWait(PropertyUtils.getPropertyAsInt("wait.noteslist"));
     }
 
     public void restoreNoteFromTrashCan(String title) {
@@ -295,12 +295,6 @@ public class HomePage extends EvernotePage {
 
     public boolean trashCanContainsNotes(List<String> titles) {
         goToTrashCan();
-
-        // When trash can is displayed, the notes list is displayed with only those notes in the trash
-        // However, at times, the notes list is displayed with the full list of notes, and is then 'refreshed'
-        // with only the tagged notes. Hence the requirement for a pause.
-        WaitHelper.simplyWait(2);
-
         return notesList.containsAllNotes(titles);
     }
 
@@ -324,6 +318,9 @@ public class HomePage extends EvernotePage {
     public void addTagToNotes(String tag, List<String> titles) {
         mainMenu.clickNotesButton();
 
+        // Notes may take a moment to be loaded.
+        WaitHelper.simplyWait(PropertyUtils.getPropertyAsInt("wait.noteslist"));
+
         for (String title : titles) {
             notesList.clickNote(title);
             noteSection.addTag(tag);
@@ -338,16 +335,11 @@ public class HomePage extends EvernotePage {
         // When tag list is clicked, the notes list is displayed with only those notes having the matching tag
         // However, at times, the notes list is displayed with the full list of notes, and is then 'refreshed'
         // with only the tagged notes. Hence the requirement for a pause.
-        WaitHelper.simplyWait(3);
+        WaitHelper.simplyWait(PropertyUtils.getPropertyAsInt("wait.noteslist"));
 
         // check that notes under a particular tag contain the list of note titles provided
         return notesList.containsAllNotes(titles);
     }
-
-//    public void deleteAllTags() {
-//        mainMenu.clickTagsButton();
-//        tagsList.deleteAllTags();
-//    }
 
     public void logOut() {
         boolean loggedOut = false;
@@ -357,7 +349,7 @@ public class HomePage extends EvernotePage {
                 accountMenu.clickLogOut();
                 try {
                     Driver.getWebDriver().switchTo().alert().dismiss();
-                    WaitHelper.simplyWait(2);
+                    WaitHelper.simplyWait(PropertyUtils.getPropertyAsInt("wait.retry"));
                     // try to log out again
                 } catch (NoAlertPresentException Ex) {
                     loggedOut = true;
