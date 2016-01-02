@@ -67,7 +67,7 @@ public class Driver {
                     FirefoxProfile firefoxProfileGrid = new FirefoxProfile();
                     firefoxProfileGrid.setEnableNativeEvents(false);
                     DesiredCapabilities firefoxCapability = DesiredCapabilities.firefox();
-                    firefoxCapability.setBrowserName("firefox");
+                    firefoxCapability.setBrowserName("Firefox");
 //                    firefoxCapability.setVersion("41.0.1");
                     firefoxCapability.setPlatform(Platform.WINDOWS);
                     firefoxCapability.setCapability(FirefoxDriver.PROFILE, firefoxProfileGrid);
@@ -76,14 +76,14 @@ public class Driver {
 
                 case "gridChrome":
                     DesiredCapabilities chromeCapability = DesiredCapabilities.chrome();
-                    chromeCapability.setBrowserName("chrome");
+                    chromeCapability.setBrowserName("Chrome");
                     chromeCapability.setPlatform(Platform.WINDOWS);
                     driver = new RemoteWebDriver(new URL(SELENIUM_GRID_HUB_URL), chromeCapability);
                     break;
 
                 case "gridIE":
                     DesiredCapabilities ieCapability = DesiredCapabilities.internetExplorer();
-                    ieCapability.setBrowserName("internet explorer");
+                    ieCapability.setBrowserName("Internet Explorer");
                     ieCapability.setVersion("11");
                     ieCapability.setPlatform(Platform.WINDOWS);
                     driver = new RemoteWebDriver(new URL(SELENIUM_GRID_HUB_URL), ieCapability);
