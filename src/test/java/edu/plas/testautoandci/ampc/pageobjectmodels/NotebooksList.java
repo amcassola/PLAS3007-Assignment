@@ -74,22 +74,15 @@ public class NotebooksList {
     }
 
     protected void goToTrashCan(){
-        System.out.println("******* gototrash 1");
         waitForAvailability();
-        System.out.println("******* gototrash 2");
         WebElement trashCanElement = DriverHelper.findElement(By.cssSelector(".qa-trash"));
-        System.out.println("******* gototrash 3");
         try{
-            System.out.println("******* gototrash 4");
             trashCanElement.click();
-            System.out.println("******* gototrash 5");
         } catch (WebDriverException wde) {
             System.out.println("******* ...trying to click delete again...");
             // wait 1 seconds and retry
             WaitHelper.simplyWait(PropertyUtils.getPropertyAsInt("wait.retry"));
-            System.out.println("******* gototrash 6");
             trashCanElement.click();
-            System.out.println("******* gototrash 7");
         }
     }
 
