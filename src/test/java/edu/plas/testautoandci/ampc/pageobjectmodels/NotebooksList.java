@@ -20,12 +20,11 @@ import java.util.List;
 public class NotebooksList {
 
     protected void waitForAvailability() {
-        DriverHelper.findElement(By.id("gwt-debug-NotebooksDrawer-title")).isDisplayed();
-//        DriverHelper.findElement(By.id("gwt-debug-NotebooksDrawerView-root")).isDisplayed();
+        isDisplayed();
     }
 
     protected boolean isDisplayed() {
-        return DriverHelper.findElement(By.id("gwt-debug-NotebooksDrawerView-root")).isDisplayed();
+        return DriverHelper.findElement(By.id("gwt-debug-NotebooksDrawer-title")).isDisplayed();
     }
 
     protected void clickCreateNotebookButton(){

@@ -277,6 +277,9 @@ public class HomePage extends EvernotePage {
 
     private void goToTrashCan() {
         mainMenu.clickNotebooksButton();
+        if (! notebooksList.isDisplayed()){
+            mainMenu.clickNotebooksButton();
+        }
         notebooksList.goToTrashCan();
 
         // When trash can is displayed, the notes list is displayed with only those notes in the trash
