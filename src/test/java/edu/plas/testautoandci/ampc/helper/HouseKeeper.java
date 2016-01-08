@@ -61,12 +61,22 @@ public class HouseKeeper {
 
     @After(value = "@notebooks", order = 10)
     public void clearNotebooks() {
-        new HomePage().deleteNotebooks();
+        try{
+            new HomePage().deleteNotebooks();
+        } catch (Exception e) {
+            System.out.println("@After hook: Failed to delete all notebooks\n");
+            e.printStackTrace();
+        }
     }
 
     @After(value = "@notes", order = 10)
     public void clearNotes() {
-        new HomePage().deleteAllNotes();
+        try {
+            new HomePage().deleteAllNotes();
+        } catch (Exception e) {
+            System.out.println("@After hook: Failed to delete all notes\n");
+            e.printStackTrace();
+        }
     }
 
     // This ensures that this @After is always executed last

@@ -9,7 +9,7 @@ import edu.plas.testautoandci.ampc.utils.SiteUrlUtils;
  * @author AnnaMaria.Cassola
  * @since 06/12/2015
  */
-public abstract class EvernotePage implements WebPage{
+public abstract class EvernotePage implements WebPage {
 
     protected final String SITE_NAME;
 

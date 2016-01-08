@@ -38,6 +38,46 @@ tried configuring build but required git plugin and java, maven, git configurati
 
 Issue: browser window not displayed! -> ran from war file
 
-10. installed selenium plugin
+10. installed selenium plugin -> difficulty with firefox due to older selecium server jar
+
+
+Performance enhancements:
+  Scenario Outline: Note creation, shortcuts and sorting
+    When a note is created with title '<note1_title>' and body '<note1_body>'
+    Then the note with title '<note1_title>' is available in the list of notes
+    When the account is logged out from
+    And the Evernote Login page is loaded
+    And the existing account is logged in to
+    When the note with title '<note1_title>' is added to shortcuts
+    Then the note with title '<note1_title>' is visible under the shortcut list
+    When a note is created with title '<note2_title>' and body '<note2_body>'
+    And a note is created with title '<note3_title>' and body '<note3_body>'
+    When the notes are sorted by Date Created (oldest first)
+    Then the notes in the notes list are in the following order:
+  Examples:
+    | note1_title  | note1_body             | note2_title          | note2_body                  | note3_title           | note3_body                  |
+    | Sample title | This is some body text | Another sample title | This is some more body text | One more sample title | This is even more body text |
+
+
+					       
+
+by.id("com.android.contacts:id/floating_action_button")
+by.xpath("//android.widget.EditText[@text='Name']")
+
+Capabilities to set for AndroidDriver:
+automationName: Appium
+newCommandTimeout: 30
+platformName:Android
+platformVersion:5.1
+deviceName: Android Emulator
+deviceRealmTimeout:30
+appPackage:
+appActivity:
+
+new AndroidDriver(appiumUri, capabilities)
+
+
+
+
 
 
