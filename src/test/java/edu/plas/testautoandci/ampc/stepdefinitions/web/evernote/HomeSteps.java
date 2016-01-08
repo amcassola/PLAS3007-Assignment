@@ -1,15 +1,15 @@
-package edu.plas.testautoandci.ampc.stepdefinitions;
+package edu.plas.testautoandci.ampc.stepdefinitions.web.evernote;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import edu.plas.testautoandci.ampc.Note;
 import edu.plas.testautoandci.ampc.pageobjectmodels.HomePage;
 import edu.plas.testautoandci.ampc.utils.PropertyUtils;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Write something about this class here
@@ -30,7 +30,8 @@ public class HomeSteps {
 
     @Then("^the account username matches the logged in username$")
     public void confirmLoggedInUser() {
-        assertEquals("Account name must match logged in user", page.getLoggedInUsername().toLowerCase(), username.toLowerCase());
+        assertEquals("Account name must match logged in user",
+                page.getLoggedInUsername().toLowerCase(), username.toLowerCase());
     }
 
     @When("^a note is created with title '(.*)' and body '(.*)'$")

@@ -34,7 +34,6 @@ Feature: Creation of notes
     | Sample note with table | 3    | 3       |
 #    | Another note with a table | 4    | 4       |
 
-  @notes
   @sorting
   Scenario: Sorting
     When notes are created with title and body:

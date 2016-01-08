@@ -1,4 +1,4 @@
-package edu.plas.testautoandci.ampc.stepdefinitions;
+package edu.plas.testautoandci.ampc.stepdefinitions.web.evernote;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;

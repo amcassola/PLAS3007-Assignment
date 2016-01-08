@@ -1,4 +1,4 @@
-package edu.plas.testautoandci.ampc.stepdefinitions;
+package edu.plas.testautoandci.ampc.stepdefinitions.web.evernote;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
@@ -21,9 +21,4 @@ public class NavigationSteps {
         DriverHelper.navigateToSite(site);
     }
 
-
-    @When("^.*window is closed$")
-    public void closeCurrentWindow() throws Throwable {
-        WindowHelper.switchToMainWindow();
-    }
 }
