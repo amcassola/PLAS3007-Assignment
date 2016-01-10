@@ -29,8 +29,8 @@ public class ContactSteps {
         app.clickContactNameToGoToContactList(name);
     }
 
-    @Then("^the contact with name (.*) is available in the list$")
-    public void contactHasDetails(String name){
+    @Then("^the contact with name (.*) is available in the contacts list$")
+    public void contactExists(String name){
         assertTrue(app.contactExists(name));
     }
 
@@ -41,6 +41,22 @@ public class ContactSteps {
 
     @When("^the contact is edited to have name (.*) and mobile number (.*)$")
     public void editContact(String newName, String newMobileNumber){
-
+        app.editContact(newName, newMobileNumber);
     }
+
+    @When("^the '(.*)' button is clicked$")
+    public void clickButton(String buttonName){
+        app.click(buttonName);
+    }
+
+    @Then("^'(.*)' is displayed$")
+    public void isTextDisplayed(String text){
+        assertTrue("'" + text + "' is expected to be displayed", app.isTextDisplayed(text));
+    }
+
+    @Then("^the contact with name (.*) is available in the favorites list$")
+    public void contactIsFavorite(String name){
+        app.isContactFavorite(name);
+    }
+
 }
