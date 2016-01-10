@@ -3,11 +3,10 @@ package edu.plas.testautoandci.ampc.helper;
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
-import edu.plas.testautoandci.ampc.driver.Driver;
-import edu.plas.testautoandci.ampc.pageobjectmodels.HomePage;
-import edu.plas.testautoandci.ampc.pageobjectmodels.LoginPage;
+import edu.plas.testautoandci.ampc.pageobjectmodels.mobile.android.ContactsApp;
+import edu.plas.testautoandci.ampc.pageobjectmodels.web.evernote.HomePage;
+import edu.plas.testautoandci.ampc.pageobjectmodels.web.evernote.LoginPage;
 import edu.plas.testautoandci.ampc.utils.PropertyUtils;
-import edu.plas.testautoandci.ampc.utils.SiteUrlUtils;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -79,8 +78,18 @@ public class HouseKeeper {
         }
     }
 
+    @After(value = "@contacts", order = 10)
+    public void clearContacts() {
+        try {
+            new ContactsApp().deleteAllContacts();
+        } catch (Exception e) {
+            System.out.println("@After hook: Failed to delete all contacts\n");
+            e.printStackTrace();
+        }
+    }
+
     // This ensures that this @After is always executed last
-    @After(order = 100)
+    @After(value = "@web", order = 100)
     public void tearDown(Scenario scenario) {
         // If Cucumber scenario fails, output time of failure and take screen shot
         if (scenario.isFailed()) {

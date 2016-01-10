@@ -1,4 +1,4 @@
-package edu.plas.testautoandci.ampc.pageobjectmodels;
+package edu.plas.testautoandci.ampc.pageobjectmodels.web;
 
 /**
  * Write something about this class here

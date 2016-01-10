@@ -3,7 +3,7 @@ package edu.plas.testautoandci.ampc.stepdefinitions.web.evernote;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import cucumber.api.java8.En;
-import edu.plas.testautoandci.ampc.pageobjectmodels.LoginPage;
+import edu.plas.testautoandci.ampc.pageobjectmodels.web.evernote.LoginPage;
 import edu.plas.testautoandci.ampc.utils.PropertyUtils;
 
 import static org.junit.Assert.assertEquals;

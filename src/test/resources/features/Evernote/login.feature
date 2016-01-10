@@ -1,4 +1,4 @@
-@login
+@web @login
 Feature: Evernote login testing
 
   Background:

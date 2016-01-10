@@ -1,4 +1,4 @@
-@notes
+@web @notes
 Feature: Creation of notes
 
   Background:

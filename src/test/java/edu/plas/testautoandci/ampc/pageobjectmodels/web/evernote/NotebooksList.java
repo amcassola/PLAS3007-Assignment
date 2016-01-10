@@ -1,4 +1,4 @@
-package edu.plas.testautoandci.ampc.pageobjectmodels;
+package edu.plas.testautoandci.ampc.pageobjectmodels.web.evernote;
 
 import edu.plas.testautoandci.ampc.driver.Driver;
 import edu.plas.testautoandci.ampc.helper.DriverHelper;

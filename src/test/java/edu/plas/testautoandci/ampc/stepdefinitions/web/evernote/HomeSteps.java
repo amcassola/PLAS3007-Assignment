@@ -3,7 +3,7 @@ package edu.plas.testautoandci.ampc.stepdefinitions.web.evernote;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import edu.plas.testautoandci.ampc.Note;
-import edu.plas.testautoandci.ampc.pageobjectmodels.HomePage;
+import edu.plas.testautoandci.ampc.pageobjectmodels.web.evernote.HomePage;
 import edu.plas.testautoandci.ampc.utils.PropertyUtils;
 
 import java.util.List;

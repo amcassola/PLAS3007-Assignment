@@ -1,4 +1,4 @@
-package edu.plas.testautoandci.ampc.pageobjectmodels;
+package edu.plas.testautoandci.ampc.pageobjectmodels.web.evernote;
 
 import edu.plas.testautoandci.ampc.Note;
 import edu.plas.testautoandci.ampc.driver.Driver;
@@ -9,7 +9,6 @@ import edu.plas.testautoandci.ampc.utils.SiteUrlUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
