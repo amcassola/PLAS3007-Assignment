@@ -1,6 +1,7 @@
 package edu.plas.testautoandci.ampc.driver;
 
 import edu.plas.testautoandci.ampc.utils.PropertyUtils;
+import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.remote.MobileCapabilityType;
 import io.appium.java_client.remote.MobilePlatform;
 import org.openqa.selenium.Platform;
@@ -17,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Driver {
     private static WebDriver webDriver = null;
-    private static io.appium.java_client.android.AndroidDriver androidDriver = null;
+    private static AndroidDriver androidDriver = null;
     private static String browser;
     private static final String SELENIUM_GRID_HUB_URL = PropertyUtils.getProperty("selenium.hub.url");
     private static final String CHROME_DRIVER_MAC_PATH = PropertyUtils.getProperty("browser.driver.path.mac.chrome");
@@ -40,7 +41,7 @@ public class Driver {
         return webDriver;
     }
 
-    public static io.appium.java_client.android.AndroidDriver getAndroidDriver() {
+    public static AndroidDriver getAndroidDriver() {
         if (androidDriver == null) {
             startAndroidDriver();
 //            throw new IllegalStateException("Selenium WebDriver is not initialised!");
@@ -64,7 +65,7 @@ public class Driver {
             capabilities.setCapability(MobileCapabilityType.BROWSER_NAME, "");
             capabilities.setCapability(MobileCapabilityType.APP_PACKAGE, "com.android.contacts");
             capabilities.setCapability(MobileCapabilityType.APP_ACTIVITY, ".DialtactsContactsEntryActivity");
-            androidDriver = new io.appium.java_client.android.AndroidDriver(new URL(APPIUM_HUB_URL), capabilities);
+            androidDriver = new AndroidDriver(new URL(APPIUM_HUB_URL), capabilities);
         } catch (Exception e) {
             throw new RuntimeException("Failed to initialize Android Driver!", e);
         }
