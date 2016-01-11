@@ -1,6 +1,7 @@
 package edu.plas.testautoandci.ampc.pageobjectmodels.mobile.android;
 
 import edu.plas.testautoandci.ampc.driver.Driver;
+import edu.plas.testautoandci.ampc.helper.WaitHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
@@ -17,6 +18,10 @@ public class ContactsApp {
 
     private WebElement getElementByText(String text) {
         return Driver.getAndroidDriver().findElementByXPath("//*[@text='" + text + "']");
+    }
+
+    private WebElement getElementByName(String elementName) {
+        return Driver.getAndroidDriver().findElementByName(elementName);
     }
 
     public void clickContactNameToGoToContactList(String name) {
@@ -38,7 +43,7 @@ public class ContactsApp {
 
     public void click(String elementName) {
         try {
-            Driver.getAndroidDriver().findElementByName(elementName).click();
+            getElementByName(elementName).click();
         } catch (NoSuchElementException nsee) {
             Driver.getAndroidDriver().findElement(By.xpath("//*[@content-desc='" + elementName + "']")).click();
         }
@@ -123,7 +128,7 @@ public class ContactsApp {
 
     public void editContact(String newName, String newMobileNumber) {
         click("More options");
-        Driver.getAndroidDriver().findElementByName("Edit").click();
+        click("Edit");
 
         WebElement name = Driver.getAndroidDriver().findElement(By.xpath("//android.widget.EditText[1]"));
         name.clear();
@@ -147,7 +152,29 @@ public class ContactsApp {
     }
 
     public void deleteAllContacts() {
-        click("All contacts");
+        try{
+            getElementByName("Create a new contact");
+            // no contacts exist
+            return;
+        } catch(NoSuchElementException nsee){
+            // continue
+        }
+
+        try {
+            click("All contacts");
+        } catch (NoSuchElementException nsee1){
+            // retry
+            WaitHelper.simplyWait(1);
+            try {
+                System.out.println("**** ...trying to click 'All contacts' again...");
+                click("All contacts");
+            }catch (NoSuchElementException nsee2) {
+                System.out.println("**** Could not click 'All contacts'. No such element on screen.");
+                System.out.println("**** Failed to delete all contacts");
+                return;
+            }
+        }
+
         List<WebElement> contacts = getContacts();
         while (contacts.size() > 0) {
             contacts.get(0).click();
