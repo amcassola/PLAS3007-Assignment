@@ -40,7 +40,15 @@ public class SearchSection {
             searchBox.click();
         }
 
-        searchBox.clear();
+        try {
+            searchBox.clear();
+        }catch (WebDriverException wde) {
+            System.out.println("******* ...trying to clear search box again...");
+            // wait 1 second and retry
+            WaitHelper.simplyWait(PropertyUtils.getPropertyAsInt("wait.retry"));
+            searchBox.clear();
+        }
+
         searchBox.sendKeys(text);
         searchBox.sendKeys(Keys.RETURN);
     }
