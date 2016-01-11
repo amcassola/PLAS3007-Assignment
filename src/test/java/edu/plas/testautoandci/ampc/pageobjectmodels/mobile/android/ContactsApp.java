@@ -117,7 +117,8 @@ public class ContactsApp {
     }
 
     private String getContactDetailXpathForView(String detailCategory, String detailType) {
-        // retrieve only 1st matching text view
+        // retrieve only 1st matching text view. Other matching elements returned would be of other categories -
+        // assumption that only 1 detail of each category-type combination is present.
         return "//android.widget.TextView[@text='" + detailCategory + "']/../following-sibling::android.widget.FrameLayout//" + (detailType != null ? "android.widget.LinearLayout[./android.widget.LinearLayout[./android.widget.TextView[@text='" + detailType + "']]]/" : "") + "android.widget.TextView[1]";
     }
 
