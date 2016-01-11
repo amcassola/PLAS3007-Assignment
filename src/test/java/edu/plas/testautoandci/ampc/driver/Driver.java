@@ -88,9 +88,9 @@ public class Driver {
 
                 case "localChrome":
                     if (System.getProperty("os.name").contains("Mac")) {
-                        System.setProperty("webdriver.chrome.webDriver", CHROME_DRIVER_MAC_PATH);
+                        System.setProperty("webdriver.chrome.driver", CHROME_DRIVER_MAC_PATH);
                     } else if (System.getProperty("os.name").contains("Windows")) {
-                        System.setProperty("webdriver.chrome.webDriver", CHROME_DRIVER_WINDOWS_PATH);
+                        System.setProperty("webdriver.chrome.driver", CHROME_DRIVER_WINDOWS_PATH);
                     }
                     webDriver = new ChromeDriver();
                     break;
