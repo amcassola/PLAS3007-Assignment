@@ -5,6 +5,7 @@ import cucumber.api.java.en.When;
 import edu.plas.testautoandci.ampc.driver.Driver;
 import edu.plas.testautoandci.ampc.helper.DriverHelper;
 import edu.plas.testautoandci.ampc.helper.WindowHelper;
+import edu.plas.testautoandci.ampc.pageobjectmodels.web.WebPageNavigator;
 import edu.plas.testautoandci.ampc.utils.SiteUrlUtils;
 
 /**
@@ -16,9 +17,11 @@ import edu.plas.testautoandci.ampc.utils.SiteUrlUtils;
 
 public class NavigationSteps {
 
+    WebPageNavigator navigator = new WebPageNavigator();
+
     @Given("^the (.*) (?:site|page) is loaded$")
     public void siteIsLoaded(String site) {
-        DriverHelper.navigateToSite(site);
+        navigator.navigateToSite(site);
     }
 
 }
